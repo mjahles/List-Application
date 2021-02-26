@@ -21,3 +21,6 @@ Listed below are project check-in dates. Think of these as sanity checks to make
 - [ ] Database: Week 11
 - [ ] Middleware: Week 13
 - [ ] Hosting: Week 15
+
+
+The current plan for technologies used for this project are either PHP or ASP.NET for the main structure and MySQL for the backend database.

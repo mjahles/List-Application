@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "CreateList";
+}
+
+<h2 contenteditable="true">New List</h2>
+
+<button onclick="AddColumnHeader();" type="button">Create new Column</button>
+
+<table class="table table-bordered table-hover">
+    <tr id="columnNames">
+        <th contenteditable="true">Column Label</th>
+    </tr>
+    <tr>
+        <td contenteditable="true">Column data</td>
+    </tr>
+</table>
+
+<script>
+    // Defining the counter variable for the new column Ids
+    x = 0;
+
+    // Add column header to table
+    function AddColumnHeader() {
+        x = x + 1
+        $("#columnNames").append('<td id="Column' + x + '" contenteditable="true">New Column</td>');
+    }
+</script> <!-- You have to use backticks ` (Tilde without the shift) in order to do string interpolation in javascript -->

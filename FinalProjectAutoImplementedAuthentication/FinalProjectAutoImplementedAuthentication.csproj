@@ -238,10 +238,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\List\IndexList.cshtml" />
     <Content Include="Views\List\MyLists.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\List\CreateList.cshtml" />
-=======
->>>>>>> f78771c4308149db08cfb929a462a2ee00f02017
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

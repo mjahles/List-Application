@@ -9,7 +9,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
     public class ListController : Controller
     {
         // GET: List
-        //[Authorize]
+        [Authorize]
         public ActionResult IndexList()
         {
             return View();

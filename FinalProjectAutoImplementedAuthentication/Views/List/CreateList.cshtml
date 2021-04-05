@@ -5,13 +5,13 @@
 
 <h2 contenteditable="true">New List</h2>
 
-<button onclick="AddColumnHeader();" type="button">Create new Column</button>
+<button onclick="AddColumn();" type="button">Create new Column</button>
 
 <table class="table table-bordered table-hover">
-    <tr id="columnNames">
-        <th contenteditable="true">Column Label</th>
+    <tr id="columnNamesContainer">
+        <th id="columnHeader0" contenteditable="true">Column Label</th>
     </tr>
-    <tr>
+    <tr id="columnDataContainer">
         <td contenteditable="true">Column data</td>
     </tr>
 </table>
@@ -21,8 +21,9 @@
     x = 0;
 
     // Add column header to table
-    function AddColumnHeader() {
+    function AddColumn() {
         x = x + 1
-        $("#columnNames").append('<td id="Column' + x + '" contenteditable="true">New Column</td>');
+        $("#columnNamesContainer").append('<td id="columnHeader' + x + '" contenteditable="true">New Column</td>')
+        $("#columnDataContainer").append('<td id="columnData' + x + '" contenteditable="true">Column Data</td>');
     }
 </script> <!-- You have to use backticks ` (Tilde without the shift) in order to do string interpolation in javascript -->

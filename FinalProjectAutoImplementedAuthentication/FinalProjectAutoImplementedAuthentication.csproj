@@ -239,6 +239,7 @@
     <Content Include="Views\List\IndexList.cshtml" />
     <Content Include="Views\List\MyLists.cshtml" />
     <Content Include="Views\List\CreateList.cshtml" />
+    <Content Include="Views\List\DeleteList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

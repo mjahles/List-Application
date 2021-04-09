@@ -24,5 +24,10 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
         {
             return View();
         }
+
+        public ActionResult DeleteList()
+        {
+            return View();
+        }
     }
 }

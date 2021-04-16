@@ -9,7 +9,7 @@
 
 <table class="table table-bordered table-hover">
     <tr id="columnNamesContainer">
-        <th id="columnHeader0" contenteditable="true">Column Label</th>
+        <th id="columnHeader0" class="headerRow" contenteditable="true">Column Label</th>
     </tr>
     <tr id="columnDataContainer">
         <td contenteditable="true">Column data</td>
@@ -19,11 +19,17 @@
 <script>
     // Defining the counter variable for the new column Ids
     x = 0;
+    y = 0;
 
     // Add column header to table
     function AddColumn() {
         x = x + 1
-        $("#columnNamesContainer").append('<td id="columnHeader' + x + '" contenteditable="true">New Column</td>')
+        $("#columnNamesContainer").append('<td id="columnHeader' + x + '" class="headerRow" contenteditable="true">New Column</td>')
         $("#columnDataContainer").append('<td id="columnData' + x + '" contenteditable="true">Column Data</td>');
+    }
+
+    function AddRow() {
+        y = y + 1
+
     }
 </script> <!-- You have to use backticks ` (Tilde without the shift) in order to do string interpolation in javascript -->

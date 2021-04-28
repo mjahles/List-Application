@@ -4,14 +4,26 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+
 namespace FinalProjectAutoImplementedAuthentication.Controllers
 {
     public class HomeController : Controller
     {
+        //UserDataEntity DB = new UserDataEntity();
+
         public ActionResult Index()
         {
+
+
             return View();
         }
+
+        /*public ActionResult Index1()
+        {
+
+            List<UserList> UserList = DB.UserLists.ToList();
+            return View(UserList);
+        }*/
 
         public ActionResult About()
         {

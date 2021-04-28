@@ -9,6 +9,8 @@ CREATE TABLE [dbo].[UserLists]
 (
 	[ListId] INT IDENTITY PRIMARY KEY,
 	[ListName] VARCHAR(50) NOT NULL,
+    [RowCount] INT NOT NULL,
+    [ColumnCount] INT NOT NULL,
 	[OwnerId] INT NOT NULL
 );
 
@@ -17,7 +19,8 @@ CREATE TABLE [dbo].[ListInfo]
 	[InfoId] INT IDENTITY PRIMARY KEY,
 	[ColumnName] VARCHAR(25) NOT NULL,
 	[ColumnData] VARCHAR(50) NOT NULL,
-    [RowId] INT NOT NULL,
+    [RowNum] INT NOT NULL,
+    [ColumnNum] INT NOT NULL,
     [ListId] INT NOT NULL
 );
 

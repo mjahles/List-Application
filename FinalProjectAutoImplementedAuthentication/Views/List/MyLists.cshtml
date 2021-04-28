@@ -1,25 +1,45 @@
-﻿<th>Sample Lists</th>
-<th>Date Created</th>
-<th>Date Modified</th>
+﻿@model IEnumerable<FinalProjectAutoImplementedAuthentication.Models.UserList>
 
-<tr>
-    <td>List1</td>
-    <td>3/25/2021</td>
-    <td>4/1/2021</td>
-    <td>@Html.Partial("DeleteList")</td>
-</tr>
-<tr>
-    <td>List2</td>
-    <td>3/25/2021</td>
-    <td>4/1/2021</td>
-</tr>
-<tr>
-    <td>List3</td>
-    <td>3/25/2021</td>
-    <td>4/1/2021</td>
-</tr>
-<tr>
-    <td>List4</td>
-    <td>3/25/2021</td>
-    <td>4/1/2021</td>
-</tr>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ListName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RowCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ColumnCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OwnerId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ListName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RowCount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ColumnCount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OwnerId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ListId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ListId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ListId })
+        </td>
+    </tr>
+}
+
+</table>

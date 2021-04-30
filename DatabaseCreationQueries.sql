@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[ApprovedUsers]
 (
 	[AppUserId] INT IDENTITY PRIMARY KEY,
-	[UserId] INT NOT NULL,
+	[UserId] NVARCHAR(128) NOT NULL,
 	[ListId] INT NOT NULL
 );
 
@@ -11,14 +11,14 @@ CREATE TABLE [dbo].[UserLists]
 	[ListName] VARCHAR(50) NOT NULL,
     [RowCount] INT NOT NULL,
     [ColumnCount] INT NOT NULL,
-	[OwnerId] INT NOT NULL
+	[OwnerId] NVARCHAR(128) NOT NULL
 );
 
 CREATE TABLE [dbo].[ListInfo]
 (
 	[InfoId] INT IDENTITY PRIMARY KEY,
-	[ColumnName] VARCHAR(25) NOT NULL,
-	[ColumnData] VARCHAR(50) NOT NULL,
+	[ColumnName] VARCHAR(25),
+	[ColumnData] VARCHAR(50),
     [RowNum] INT NOT NULL,
     [ColumnNum] INT NOT NULL,
     [ListId] INT NOT NULL

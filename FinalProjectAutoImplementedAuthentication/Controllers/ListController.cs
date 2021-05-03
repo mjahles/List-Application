@@ -4,27 +4,55 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FinalProjectAutoImplementedAuthentication.Models;
+using Microsoft.AspNet.Identity;
 
 namespace FinalProjectAutoImplementedAuthentication.Controllers
 {
     public class ListController : Controller
     {
-        UserListsEntities DB = new UserListsEntities();
+        ListDataEntities DB = new ListDataEntities();
         // GET: List
         [Authorize]
         public ActionResult IndexList()
         {
+            List<ApprovedUser> approvedUsers = DB.ApprovedUsers.ToList();
+            List<ListInfo> listInfos = DB.ListInfoes.ToList();
             List<UserList> userLists = DB.UserLists.ToList();
-            return View(userLists);
+
+            ListDataViewModel model = new ListDataViewModel()
+            {
+                ApprovedUsers = approvedUsers,
+                ListInfos = listInfos,
+                UserLists = userLists
+            };
+            
+            ViewData["userid"] = User.Identity.GetUserId();
+
+            return View(model);
         }
 
         public ActionResult MyLists()
         {
+            //List<UserList> userLists = DB.UserLists.ToList();
+            //return View(userLists);
+            //return View();
+            List<ApprovedUser> approvedUsers = DB.ApprovedUsers.ToList();
+            List<ListInfo> listInfos = DB.ListInfoes.ToList();
             List<UserList> userLists = DB.UserLists.ToList();
-            return View(userLists);
+
+            ListDataViewModel model = new ListDataViewModel()
+            {
+                ApprovedUsers = approvedUsers,
+                ListInfos = listInfos,
+                UserLists = userLists
+            };
+            
+            ViewData["userid"] = User.Identity.GetUserId();
+
+            return View(model);
         }
 
-        //You have to render a data list in both the partial view and the containing view in order for it to work. I had to setup the UserLists data to render in IndexList() in order for it to render in MyLists().  If I don't then I get a NullReferenceException.
+        //You can pass view data from a containing view to a partial view that is rendered within the containing view. I can display the ListData from IndexList() inside of MyLists() since MyLists() is rendered within IndexList(). The same is true for ViewData[].
 
         public ActionResult CreateList()
         {

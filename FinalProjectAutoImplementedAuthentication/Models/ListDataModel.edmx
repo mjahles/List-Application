@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ListDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ApprovedUsers">
+          <Key>
+            <PropertyRef Name="AppUserId" />
+          </Key>
+          <Property Name="AppUserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ListId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ListInfo">
+          <Key>
+            <PropertyRef Name="InfoId" />
+          </Key>
+          <Property Name="InfoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ColumnName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="ColumnData" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RowNum" Type="int" Nullable="false" />
+          <Property Name="ColumnNum" Type="int" Nullable="false" />
+          <Property Name="ListId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserLists">
+          <Key>
+            <PropertyRef Name="ListId" />
+          </Key>
+          <Property Name="ListId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ListName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RowCount" Type="int" Nullable="false" />
+          <Property Name="ColumnCount" Type="int" Nullable="false" />
+          <Property Name="OwnerId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="ListDataModelStoreContainer">
+          <EntitySet Name="ApprovedUsers" EntityType="Self.ApprovedUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ListInfo" EntityType="Self.ListInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLists" EntityType="Self.UserLists" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ListDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ApprovedUser">
+          <Key>
+            <PropertyRef Name="AppUserId" />
+          </Key>
+          <Property Name="AppUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ListId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ListInfo">
+          <Key>
+            <PropertyRef Name="InfoId" />
+          </Key>
+          <Property Name="InfoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ColumnName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ColumnData" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RowNum" Type="Int32" Nullable="false" />
+          <Property Name="ColumnNum" Type="Int32" Nullable="false" />
+          <Property Name="ListId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserList">
+          <Key>
+            <PropertyRef Name="ListId" />
+          </Key>
+          <Property Name="ListId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ListName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RowCount" Type="Int32" Nullable="false" />
+          <Property Name="ColumnCount" Type="Int32" Nullable="false" />
+          <Property Name="OwnerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="ListDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ApprovedUsers" EntityType="Self.ApprovedUser" />
+          <EntitySet Name="ListInfoes" EntityType="Self.ListInfo" />
+          <EntitySet Name="UserLists" EntityType="Self.UserList" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ListDataModelStoreContainer" CdmEntityContainer="ListDataEntities">
+          <EntitySetMapping Name="ApprovedUsers">
+            <EntityTypeMapping TypeName="ListDataModel.ApprovedUser">
+              <MappingFragment StoreEntitySet="ApprovedUsers">
+                <ScalarProperty Name="AppUserId" ColumnName="AppUserId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ListId" ColumnName="ListId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ListInfoes">
+            <EntityTypeMapping TypeName="ListDataModel.ListInfo">
+              <MappingFragment StoreEntitySet="ListInfo">
+                <ScalarProperty Name="InfoId" ColumnName="InfoId" />
+                <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
+                <ScalarProperty Name="ColumnData" ColumnName="ColumnData" />
+                <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+                <ScalarProperty Name="ColumnNum" ColumnName="ColumnNum" />
+                <ScalarProperty Name="ListId" ColumnName="ListId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLists">
+            <EntityTypeMapping TypeName="ListDataModel.UserList">
+              <MappingFragment StoreEntitySet="UserLists">
+                <ScalarProperty Name="ListId" ColumnName="ListId" />
+                <ScalarProperty Name="ListName" ColumnName="ListName" />
+                <ScalarProperty Name="RowCount" ColumnName="RowCount" />
+                <ScalarProperty Name="ColumnCount" ColumnName="ColumnCount" />
+                <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

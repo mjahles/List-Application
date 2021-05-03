@@ -18,6 +18,6 @@ namespace FinalProjectAutoImplementedAuthentication.Models
         public string ListName { get; set; }
         public int RowCount { get; set; }
         public int ColumnCount { get; set; }
-        public int OwnerId { get; set; }
+        public string OwnerId { get; set; }
     }
 }

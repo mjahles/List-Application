@@ -1,45 +1,185 @@
-﻿@model IEnumerable<FinalProjectAutoImplementedAuthentication.Models.UserList>
+﻿@using FinalProjectAutoImplementedAuthentication.Models;
+@model FinalProjectAutoImplementedAuthentication.Models.ListDataViewModel
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ListName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RowCount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ColumnCount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OwnerId)
-        </th>
-        <th></th>
+        @foreach (var label in Model.UserLists)
+        {
+            <th>
+                @Html.DisplayNameFor(modelLabel => label.ListName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelLabel => label.RowCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelLabel => label.ColumnCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelLabel => label.OwnerId)
+            </th>
+            break;
+        }
+        @*<th>
+                @Html.DisplayNameFor(model => Model.UserLists)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.RowCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ColumnCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OwnerId)
+                </th>
+                <th></th>*@
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ListName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RowCount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ColumnCount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OwnerId)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ListId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ListId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ListId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model.UserLists)
+    {
+        if (item.OwnerId == ViewData["userid"].ToString())
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ListName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RowCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ColumnCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OwnerId)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ListId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ListId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ListId })
+                </td>
+            </tr>
+        }
+    }
+    @{
+        UserList yeet = new UserList();
+
+        List<int> curListId = new List<int>();
+     }
+
+    @foreach (var appUser in Model.ApprovedUsers)
+    {
+        foreach (var item in Model.UserLists)
+        {
+            if (appUser.UserId == ViewData["userid"].ToString() && item.OwnerId != appUser.UserId)
+            {
+                if (!curListId.Contains(item.ListId))
+                {
+                    curListId.Add(item.ListId);
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ListName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RowCount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ColumnCount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OwnerId)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ListId }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.ListId }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ListId })
+                        </td>
+                    </tr>
+                }
+
+
+                    @*<tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ListName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RowCount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ColumnCount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OwnerId)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ListId }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.ListId }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ListId })
+                        </td>
+                    </tr>*@
+                }
+            }
+        }
+
+    @*@{ int lastListId = 0;
+        List<Yeet> yeet = new List<Yeet>();
+    }
+    @foreach (var appUser in Model.ApprovedUsers)
+    {
+        foreach (var item in Model.UserLists)
+        {
+            var yeetfunction = yeet.Exists(x => x.ListId != item.ListId);
+            if (appUser.UserId == ViewData["userid"].ToString() && item.OwnerId != appUser.UserId)
+            {
+                if (yeetfunction)
+                {
+                    yeet.Add(new Yeet { ListId = item.ListId, ListName = item.ListName, RowCount = item.RowCount, ColumnCount = item.ColumnCount, OwnerId = item.OwnerId });
+
+                    foreach (var yeetItem in yeet)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(yeeter => yeetItem.ListName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(yeeter => yeetItem.RowCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(yeeter => yeetItem.ColumnCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(yeeter => yeetItem.OwnerId)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = yeetItem.ListId }) |
+                                @Html.ActionLink("Details", "Details", new { id = yeetItem.ListId }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = yeetItem.ListId })
+                            </td>
+                        </tr>
+                    }
+                }
+                <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ListName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RowCount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ColumnCount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OwnerId)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ListId }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.ListId }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ListId })
+                        </td>
+                    </tr>
+            }
+        }
+    }*@
 
 </table>

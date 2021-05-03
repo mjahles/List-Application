@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ListDataModelStoreContainer" CdmEntityContainer="ListDataEntities">
+    <EntitySetMapping Name="ApprovedUsers">
+      <EntityTypeMapping TypeName="ListDataModel.ApprovedUser">
+        <MappingFragment StoreEntitySet="ApprovedUsers">
+          <ScalarProperty Name="AppUserId" ColumnName="AppUserId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ListId" ColumnName="ListId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ListInfoes">
+      <EntityTypeMapping TypeName="ListDataModel.ListInfo">
+        <MappingFragment StoreEntitySet="ListInfo">
+          <ScalarProperty Name="InfoId" ColumnName="InfoId" />
+          <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
+          <ScalarProperty Name="ColumnData" ColumnName="ColumnData" />
+          <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+          <ScalarProperty Name="ColumnNum" ColumnName="ColumnNum" />
+          <ScalarProperty Name="ListId" ColumnName="ListId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserLists">
+      <EntityTypeMapping TypeName="ListDataModel.UserList">
+        <MappingFragment StoreEntitySet="UserLists">
+          <ScalarProperty Name="ListId" ColumnName="ListId" />
+          <ScalarProperty Name="ListName" ColumnName="ListName" />
+          <ScalarProperty Name="RowCount" ColumnName="RowCount" />
+          <ScalarProperty Name="ColumnCount" ColumnName="ColumnCount" />
+          <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

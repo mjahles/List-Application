@@ -178,26 +178,34 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApprovedUser.cs">
+      <DependentUpon>ListDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ListDataModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ListDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ListDataModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ListDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ListDataModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ListDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ListDataViewModel.cs" />
+    <Compile Include="Models\ListInfo.cs">
+      <DependentUpon>ListDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\UserList.cs">
-      <DependentUpon>UserListsModel.tt</DependentUpon>
+      <DependentUpon>ListDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserListsModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserListsModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserListsModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserListsModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserListsModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserListsModel.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Yeet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -210,24 +218,24 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\UserListsModel.Context.tt">
+    <Content Include="Models\ListDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UserListsModel.edmx</DependentUpon>
-      <LastGenOutput>UserListsModel.Context.cs</LastGenOutput>
+      <DependentUpon>ListDataModel.edmx</DependentUpon>
+      <LastGenOutput>ListDataModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\UserListsModel.tt">
+    <Content Include="Models\ListDataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UserListsModel.edmx</DependentUpon>
-      <LastGenOutput>UserListsModel.cs</LastGenOutput>
+      <DependentUpon>ListDataModel.edmx</DependentUpon>
+      <LastGenOutput>ListDataModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\UserListsModel.edmx">
+    <EntityDeploy Include="Models\ListDataModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>UserListsModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>ListDataModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\UserListsModel.edmx.diagram">
-      <DependentUpon>UserListsModel.edmx</DependentUpon>
+    <Content Include="Models\ListDataModel.edmx.diagram">
+      <DependentUpon>ListDataModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

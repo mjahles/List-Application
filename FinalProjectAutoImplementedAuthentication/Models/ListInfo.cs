@@ -20,5 +20,7 @@ namespace FinalProjectAutoImplementedAuthentication.Models
         public int RowNum { get; set; }
         public int ColumnNum { get; set; }
         public int ListId { get; set; }
+    
+        public virtual UserList UserList { get; set; }
     }
 }

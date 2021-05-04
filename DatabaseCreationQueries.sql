@@ -21,7 +21,8 @@ CREATE TABLE [dbo].[ListInfo]
 	[ColumnData] VARCHAR(50),
     [RowNum] INT NOT NULL,
     [ColumnNum] INT NOT NULL,
-    [ListId] INT NOT NULL
+    [ListId] INT NOT NULL,
+    CONSTRAINT [FK_ListInfo_UserLists] FOREIGN KEY ([ListId]) REFERENCES [UserLists]([ListId])
 );
 
 ALTER TABLE ApprovedUsers

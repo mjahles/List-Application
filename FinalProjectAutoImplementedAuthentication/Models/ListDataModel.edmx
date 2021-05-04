@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ListDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ListDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ApprovedUsers">
           <Key>
             <PropertyRef Name="AppUserId" />
@@ -34,13 +34,28 @@
           <Property Name="ColumnCount" Type="int" Nullable="false" />
           <Property Name="OwnerId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
+        <Association Name="FK_ListInfo_UserLists">
+          <End Role="UserLists" Type="Self.UserLists" Multiplicity="1" />
+          <End Role="ListInfo" Type="Self.ListInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserLists">
+              <PropertyRef Name="ListId" />
+            </Principal>
+            <Dependent Role="ListInfo">
+              <PropertyRef Name="ListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ListDataModelStoreContainer">
           <EntitySet Name="ApprovedUsers" EntityType="Self.ApprovedUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ListInfo" EntityType="Self.ListInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLists" EntityType="Self.UserLists" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ListInfo_UserLists" Association="Self.FK_ListInfo_UserLists">
+            <End Role="UserLists" EntitySet="UserLists" />
+            <End Role="ListInfo" EntitySet="ListInfo" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ListDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -62,6 +77,7 @@
           <Property Name="RowNum" Type="Int32" Nullable="false" />
           <Property Name="ColumnNum" Type="Int32" Nullable="false" />
           <Property Name="ListId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserList" Relationship="ListDataModel.FK_ListInfo_UserLists" FromRole="ListInfo" ToRole="UserList" />
         </EntityType>
         <EntityType Name="UserList">
           <Key>
@@ -72,12 +88,29 @@
           <Property Name="RowCount" Type="Int32" Nullable="false" />
           <Property Name="ColumnCount" Type="Int32" Nullable="false" />
           <Property Name="OwnerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ListInfoes" Relationship="ListDataModel.FK_ListInfo_UserLists" FromRole="UserList" ToRole="ListInfo" />
         </EntityType>
         <EntityContainer Name="ListDataEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ApprovedUsers" EntityType="Self.ApprovedUser" />
           <EntitySet Name="ListInfoes" EntityType="Self.ListInfo" />
           <EntitySet Name="UserLists" EntityType="Self.UserList" />
+          <AssociationSet Name="FK_ListInfo_UserLists" Association="ListDataModel.FK_ListInfo_UserLists">
+            <End Role="UserList" EntitySet="UserLists" />
+            <End Role="ListInfo" EntitySet="ListInfoes" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_ListInfo_UserLists">
+          <End Type="ListDataModel.UserList" Role="UserList" Multiplicity="1" />
+          <End Type="ListDataModel.ListInfo" Role="ListInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserList">
+              <PropertyRef Name="ListId" />
+            </Principal>
+            <Dependent Role="ListInfo">
+              <PropertyRef Name="ListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

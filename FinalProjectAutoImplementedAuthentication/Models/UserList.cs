@@ -14,10 +14,19 @@ namespace FinalProjectAutoImplementedAuthentication.Models
     
     public partial class UserList
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserList()
+        {
+            this.ListInfoes = new HashSet<ListInfo>();
+        }
+    
         public int ListId { get; set; }
         public string ListName { get; set; }
         public int RowCount { get; set; }
         public int ColumnCount { get; set; }
         public string OwnerId { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ListInfo> ListInfoes { get; set; }
     }
 }

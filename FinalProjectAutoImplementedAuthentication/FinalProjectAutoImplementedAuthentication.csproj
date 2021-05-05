@@ -287,9 +287,10 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\List\IndexList.cshtml" />
-    <Content Include="Views\List\CreateList.cshtml" />
+    <Content Include="Views\List\OldCreateList.cshtml" />
     <Content Include="Views\List\DeleteList.cshtml" />
     <Content Include="Views\List\MyLists.cshtml" />
+    <Content Include="Views\List\CreateList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

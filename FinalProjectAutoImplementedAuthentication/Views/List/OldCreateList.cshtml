@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "CreateList";
+}
+
+<h2 contenteditable="true">New List</h2>
+
+<button onclick="AddColumn();" type="button">Create new Column</button>
+<button onclick="AddRow();" type="button">Create new Row</button>
+
+<table id="myListTable" class="table table-bordered table-hover">
+    <tr id="columnHeaderContainer">
+        <th id="columnHeader0" class="headerRow" contenteditable="true">Column Label</th>
+    </tr>
+    <tr id="columnDataContainerRow0">
+        <td id="columnData0" class="dataRow0" contenteditable="true">Column data</td>
+    </tr>
+</table>
+
+<script>
+    // Defining the counter variable for the new column Ids
+    x = 0;
+    y = 0;
+    z = 0;
+
+    // Add column header to table
+    function AddColumn() {
+        x = x + 1
+        $("#columnHeaderContainer").append('<td id="columnHeader' + x + '" class="headerRow" contenteditable="true">New Column</td>')
+        $("#columnDataContainerRow0").append('<td id="columnData' + x + '" contenteditable="true">Column Data</td>');
+    }
+
+    function AddRow() {
+        y = y + 1
+        $("#columnDataContainerRow0").append('<tr id="columnDataContainerRow' + y + '>')
+        while (z < x) {
+            $("#myListTable").append('<td id="columnData' + z + '" contenteditable="true">New Column</td>')
+            z = z + 1
+        }
+        //TODO redo this entire page worth of code. Going to have to ask the user for the number of rows that they want and create the table based upon what they input.  Ask the user for the number of rows then pass that value to a C# function and let that create the table.  Javascript is probabl not secure enough to handle that function safely.  Doing it this way would allow me to properly name the rows and columns plus I can use a view model to generate the table.
+
+        //Alternatively could also cap the user to 10 rows and columns that they can rename.  But they will be unable to continously add more rows without a limit.
+        $("#columnDataContainerRow0").append('</tr>')
+    }
+</script> <!-- You have to use backticks ` (Tilde without the shift) in order to do string interpolation in javascript -->

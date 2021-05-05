@@ -9,6 +9,7 @@ namespace FinalProjectAutoImplementedAuthentication.Entities
     public class UserList
     {
         [HiddenInput (DisplayValue = false)]
+        [Key]
         public int ListId { get; set; }
         
         [Required (ErrorMessage = "Please enter a list name")]

@@ -1,9 +1,6 @@
 ﻿@using FinalProjectAutoImplementedAuthentication.Models;
 @model FinalProjectAutoImplementedAuthentication.Models.ListDataViewModel
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         @foreach (var label in Model.UserLists)
@@ -72,7 +69,7 @@
     {
         foreach (var item in Model.UserLists)
         {
-            if (appUser.UserId == ViewData["userid"].ToString() && item.OwnerId != appUser.UserId)
+            if (appUser.UserId == ViewData["userid"].ToString() && appUser.ListId == item.ListId && item.OwnerId != appUser.UserId)
             {
                 if (!curListId.Contains(item.ListId))
                 {

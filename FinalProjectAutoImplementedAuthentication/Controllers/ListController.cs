@@ -56,6 +56,13 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
 
         public ActionResult CreateList()
         {
+            ViewData["userid"] = User.Identity.GetUserId();
+
+            return View("EditList", new Entities.UserList());
+        }
+
+        public ActionResult EditList()
+        {
             return View();
         }
 

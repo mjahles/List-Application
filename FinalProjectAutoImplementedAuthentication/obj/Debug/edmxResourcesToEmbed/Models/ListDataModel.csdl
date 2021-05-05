@@ -18,6 +18,7 @@
     <Property Name="RowNum" Type="Int32" Nullable="false" />
     <Property Name="ColumnNum" Type="Int32" Nullable="false" />
     <Property Name="ListId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="UserList" Relationship="ListDataModel.FK_ListInfo_UserLists" FromRole="ListInfo" ToRole="UserList" />
   </EntityType>
   <EntityType Name="UserList">
     <Key>
@@ -28,10 +29,27 @@
     <Property Name="RowCount" Type="Int32" Nullable="false" />
     <Property Name="ColumnCount" Type="Int32" Nullable="false" />
     <Property Name="OwnerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="ListInfoes" Relationship="ListDataModel.FK_ListInfo_UserLists" FromRole="UserList" ToRole="ListInfo" />
   </EntityType>
   <EntityContainer Name="ListDataEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="ApprovedUsers" EntityType="Self.ApprovedUser" />
     <EntitySet Name="ListInfoes" EntityType="Self.ListInfo" />
     <EntitySet Name="UserLists" EntityType="Self.UserList" />
+    <AssociationSet Name="FK_ListInfo_UserLists" Association="ListDataModel.FK_ListInfo_UserLists">
+      <End Role="UserList" EntitySet="UserLists" />
+      <End Role="ListInfo" EntitySet="ListInfoes" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="FK_ListInfo_UserLists">
+    <End Type="ListDataModel.UserList" Role="UserList" Multiplicity="1" />
+    <End Type="ListDataModel.ListInfo" Role="ListInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserList">
+        <PropertyRef Name="ListId" />
+      </Principal>
+      <Dependent Role="ListInfo">
+        <PropertyRef Name="ListId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

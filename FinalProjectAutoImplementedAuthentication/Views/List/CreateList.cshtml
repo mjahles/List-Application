@@ -1,45 +1,69 @@
-﻿
+﻿@model FinalProjectAutoImplementedAuthentication.Entities.UserList
+
 @{
     ViewBag.Title = "CreateList";
 }
 
-<h2 contenteditable="true">New List</h2>
+<h2>CreateList</h2>
 
-<button onclick="AddColumn();" type="button">Create new Column</button>
-<button onclick="AddRow();" type="button">Create new Row</button>
 
-<table id="myListTable" class="table table-bordered table-hover">
-    <tr id="columnHeaderContainer">
-        <th id="columnHeader0" class="headerRow" contenteditable="true">Column Label</th>
-    </tr>
-    <tr id="columnDataContainerRow0">
-        <td id="columnData0" class="dataRow0" contenteditable="true">Column data</td>
-    </tr>
-</table>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-<script>
-    // Defining the counter variable for the new column Ids
-    x = 0;
-    y = 0;
-    z = 0;
+    <div class="form-horizontal">
+        <h4>UserList</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ListName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ListName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ListName, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    // Add column header to table
-    function AddColumn() {
-        x = x + 1
-        $("#columnHeaderContainer").append('<td id="columnHeader' + x + '" class="headerRow" contenteditable="true">New Column</td>')
-        $("#columnDataContainerRow0").append('<td id="columnData' + x + '" contenteditable="true">Column Data</td>');
-    }
+        <div class="form-group">
+            @Html.LabelFor(model => model.RowCount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.RowCount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RowCount, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    function AddRow() {
-        y = y + 1
-        $("#columnDataContainerRow0").append('<tr id="columnDataContainerRow' + y + '>')
-        while (z < x) {
-            $("#myListTable").append('<td id="columnData' + z + '" contenteditable="true">New Column</td>')
-            z = z + 1
-        }
-        //TODO redo this entire page worth of code. Going to have to ask the user for the number of rows that they want and create the table based upon what they input.  Ask the user for the number of rows then pass that value to a C# function and let that create the table.  Javascript is probabl not secure enough to handle that function safely.  Doing it this way would allow me to properly name the rows and columns plus I can use a view model to generate the table.
+        <div class="form-group">
+            @Html.LabelFor(model => model.ColumnCount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ColumnCount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ColumnCount, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-        //Alternatively could also cap the user to 10 rows and columns that they can rename.  But they will be unable to continously add more rows without a limit.
-        $("#columnDataContainerRow0").append('</tr>')
-    }
-</script> <!-- You have to use backticks ` (Tilde without the shift) in order to do string interpolation in javascript -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.OwnerId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @{ var OwnerId = ViewData["userid"].ToString(); }
+                @*@Html.EditorFor(model => model.OwnerId, new { htmlAttributes = new { @class = "form-control" } })*@
+                @*@Html.HiddenFor()*@
+                @Html.HiddenFor(model => model.OwnerId)
+                <p>@OwnerId</p>
+                @*@Html.ViewData["userid"].ToString()*@
+                @*@Html.ValidationMessageFor(model => model.OwnerId, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "IndexList")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

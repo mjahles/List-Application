@@ -1,5 +1,4 @@
-﻿@using FinalProjectAutoImplementedAuthentication.Models;
-@model FinalProjectAutoImplementedAuthentication.Models.ListDataViewModel
+﻿@model FinalProjectAutoImplementedAuthentication.Models.ListDataViewModel
 
 <table class="table">
     <tr>
@@ -19,19 +18,6 @@
             </th>
             break;
         }
-        @*<th>
-                @Html.DisplayNameFor(model => Model.UserLists)
-            </th>
-            <th>
-                    @Html.DisplayNameFor(model => model.RowCount)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ColumnCount)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OwnerId)
-                </th>
-                <th></th>*@
     </tr>
 
     @foreach (var item in Model.UserLists)
@@ -54,16 +40,14 @@
                 <td>
                     @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
                     @Html.ActionLink("Details", "Details", new { item.ListId }) |
-                    @Html.ActionLink("Delete", "Delete", new { item.ListId })
+                    <button class="btn btn-primary" id="delete_btn" onclick="_delete()">Delete</button>
+                    @Html.ActionLink("Delete", "DeleteList", new { item.ListId })
                 </td>
             </tr>
         }
     }
-    @{
-        UserList yeet = new UserList();
 
-        List<int> curListId = new List<int>();
-     }
+    @{ List<int> curListId = new List<int>(); }
 
     @foreach (var appUser in Model.ApprovedUsers)
     {
@@ -90,93 +74,35 @@
                         <td>
                             @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
                             @Html.ActionLink("Details", "Details", new { item.ListId }) |
-                            @Html.ActionLink("Delete", "Delete", new { item.ListId })
+                            @Html.ActionLink("Delete", "DeleteList", new { item.ListId })
                         </td>
                     </tr>
                 }
-
-
-                    @*<tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ListName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RowCount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ColumnCount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OwnerId)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ListId }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.ListId }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ListId })
-                        </td>
-                    </tr>*@
-                }
             }
         }
-
-    @*@{ int lastListId = 0;
-        List<Yeet> yeet = new List<Yeet>();
     }
-    @foreach (var appUser in Model.ApprovedUsers)
-    {
-        foreach (var item in Model.UserLists)
-        {
-            var yeetfunction = yeet.Exists(x => x.ListId != item.ListId);
-            if (appUser.UserId == ViewData["userid"].ToString() && item.OwnerId != appUser.UserId)
-            {
-                if (yeetfunction)
-                {
-                    yeet.Add(new Yeet { ListId = item.ListId, ListName = item.ListName, RowCount = item.RowCount, ColumnCount = item.ColumnCount, OwnerId = item.OwnerId });
-
-                    foreach (var yeetItem in yeet)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(yeeter => yeetItem.ListName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(yeeter => yeetItem.RowCount)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(yeeter => yeetItem.ColumnCount)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(yeeter => yeetItem.OwnerId)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = yeetItem.ListId }) |
-                                @Html.ActionLink("Details", "Details", new { id = yeetItem.ListId }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = yeetItem.ListId })
-                            </td>
-                        </tr>
-                    }
-                }
-                <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ListName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RowCount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ColumnCount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OwnerId)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ListId }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.ListId }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ListId })
-                        </td>
-                    </tr>
-            }
-        }
-    }*@
-
 </table>
+
+
+<div class="modal fade" id="ActionModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4 class="modal-title" id="modalTitle"></h4>
+            </div>
+            <div class="modal-body" id="modalbody"></div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var _delete = function () {
+        var deleteURL = "/List/DeleteList";
+        $("#modalTitle").html("Delete List");
+        $("#modalbody").load(deleteURL, function () {
+            $("#ActionModal").modal("show");
+        });
+    }
+</script>

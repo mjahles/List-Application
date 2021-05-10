@@ -146,9 +146,28 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             }
         }
 
-        public ActionResult DeleteList()
+        [HttpGet]
+        public ActionResult DeleteList(int listId)
         {
-            return View();
+            Models.UserList deletedEntry = DB.UserLists.Find(listId);
+
+            return View(deletedEntry);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteList(Models.UserList listDataEntry) //Takes in the ListId as a parameter to locate the list that is to be deleted.
+        {
+            Models.UserList deletedEntry = DB.UserLists.Find(listDataEntry.ListId);
+
+            if (deletedEntry.OwnerId == User.Identity.GetUserId())
+            {
+                if (deletedEntry != null) //Checking that the list exists
+                {
+                    DB.UserLists.Remove(deletedEntry);
+                    DB.SaveChanges();
+                }
+            }
+            return RedirectToAction("IndexList");
         }
     }
 }

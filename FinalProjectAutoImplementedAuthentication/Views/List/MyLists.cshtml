@@ -52,7 +52,7 @@
                     @Html.DisplayFor(modelItem => item.OwnerId)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ListId }) |
+                    @Html.ActionLink("Edit", "EditList", new { id = item.ListId }) |
                     @Html.ActionLink("Details", "Details", new { id = item.ListId }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.ListId })
                 </td>
@@ -88,7 +88,7 @@
                             @Html.DisplayFor(modelItem => item.OwnerId)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ListId }) |
+                            @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
                             @Html.ActionLink("Details", "Details", new { id = item.ListId }) |
                             @Html.ActionLink("Delete", "Delete", new { id = item.ListId })
                         </td>

@@ -4,12 +4,26 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FinalProjectAutoImplementedAuthentication.Models;
+using FinalProjectAutoImplementedAuthentication.Abstract;
+using FinalProjectAutoImplementedAuthentication.Entities;
 using Microsoft.AspNet.Identity;
 
 namespace FinalProjectAutoImplementedAuthentication.Controllers
 {
     public class ListController : Controller
     {
+        private IUserListRespository repository;
+
+        public ListController(IUserListRespository repo)
+        {
+            repository = repo;
+        }
+
+        public ListController()
+        {
+          
+        }
+
         ListDataEntities DB = new ListDataEntities();
         // GET: List
         [Authorize]
@@ -17,7 +31,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
         {
             List<ApprovedUser> approvedUsers = DB.ApprovedUsers.ToList();
             List<ListInfo> listInfos = DB.ListInfoes.ToList();
-            List<UserList> userLists = DB.UserLists.ToList();
+            List<Models.UserList> userLists = DB.UserLists.ToList();
 
             ListDataViewModel model = new ListDataViewModel()
             {
@@ -38,7 +52,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             //return View();
             List<ApprovedUser> approvedUsers = DB.ApprovedUsers.ToList();
             List<ListInfo> listInfos = DB.ListInfoes.ToList();
-            List<UserList> userLists = DB.UserLists.ToList();
+            List<Models.UserList> userLists = DB.UserLists.ToList();
 
             ListDataViewModel model = new ListDataViewModel()
             {
@@ -54,16 +68,72 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
 
         //You can pass view data from a containing view to a partial view that is rendered within the containing view. I can display the ListData from IndexList() inside of MyLists() since MyLists() is rendered within IndexList(). The same is true for ViewData[].
 
-        public ActionResult CreateList()
+        [HttpGet]
+        public ActionResult Create()
+        {
+            ViewData["userid"] = User.Identity.GetUserId();
+            return PartialView("_Create");
+        }
+
+        [HttpPost]
+        public ActionResult Create(Models.UserList userList)
         {
             ViewData["userid"] = User.Identity.GetUserId();
 
-            return View("EditList", new Entities.UserList());
+            try
+            {
+                if (userList != null)
+                {
+                    Models.UserList listData = new Models.UserList();
+                    listData.ListId = userList.ListId;
+                    listData.ListName = userList.ListName;
+                    listData.RowCount = userList.RowCount;
+                    listData.ColumnCount = userList.ColumnCount;
+                    listData.OwnerId = ViewData["userid"].ToString();
+
+                    DB.UserLists.Add(listData);
+                    DB.SaveChanges();
+                }
+                return RedirectToAction("IndexList");
+            }
+            catch (Exception)
+            {
+                ViewBag.msg = "An error has occured.";
+                return RedirectToAction("IndexList");
+            }
         }
 
-        public ActionResult EditList()
+        public ViewResult EditList(int listId)
         {
-            return View();
+            ViewData["userid"] = User.Identity.GetUserId();
+            ViewBag.Heading = "Edit List";
+
+            List<Models.UserList> repositoryUserLists = DB.UserLists.ToList();
+
+            //ViewData["selectedRecord"] = listId;
+
+            Models.UserList editableUserList = repositoryUserLists
+                .FirstOrDefault(x => x.ListId == listId);
+            return View(editableUserList); //This renders for some reason. Doesn't save changes though
+        }
+
+        [HttpPost]
+        public ActionResult EditList(Models.UserList userList)
+        {
+            if (ModelState.IsValid)
+            {
+                repository.SaveUserList(userList);
+
+                TempData["message"] = string.Format("{0} has been saved", userList.ListName);
+
+                return RedirectToAction("IndexList");
+            }
+
+            else
+            {
+                // This code is executed if something is wrong with the data values
+                return View(userList);
+            }
         }
 
         public ActionResult DeleteList()

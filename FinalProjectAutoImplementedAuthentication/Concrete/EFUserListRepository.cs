@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using FinalProjectAutoImplementedAuthentication.Abstract;
-using FinalProjectAutoImplementedAuthentication.Entities;
+using FinalProjectAutoImplementedAuthentication.Models;
 
 namespace FinalProjectAutoImplementedAuthentication.Concrete
 {

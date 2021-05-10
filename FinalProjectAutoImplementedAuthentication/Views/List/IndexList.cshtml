@@ -3,11 +3,36 @@
     ViewBag.Title = "IndexList";
 }
 
+<div><p>@ViewBag.msg</p></div>
+
 <h2>IndexList</h2>
-<div>
-    @Html.ActionLink("Create New List", "CreateList")
-</div>
+
+<p>
+    <button class="btn btn-primary" id="create_btn" onclick="create()">Create New List</button>
+</p>
 <table class="table table-bordered table-hover">
     @Html.Partial("MyLists")
 </table>
 
+<div class="modal fade" id="ActionModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4 class="modal-title" id="modalTitle"></h4>
+            </div>
+            <div class="modal-body" id="modalbody"></div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var create = function () {
+        var createURL = "/List/Create";
+        $("#modalTitle").html("Add new list data");
+        $("#modalbody").load(createURL, function () {
+            $("#ActionModal").modal("show");
+        });
+    }
+</script>

@@ -18,6 +18,13 @@ namespace FinalProjectAutoImplementedAuthentication
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(null, "", new
+            {
+                controller = "List",
+                action = "IndexList",
+                category = (string)null
+            });
         }
     }
 }

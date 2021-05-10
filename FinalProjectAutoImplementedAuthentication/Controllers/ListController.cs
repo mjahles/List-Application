@@ -122,7 +122,17 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
         {
             if (ModelState.IsValid)
             {
-                repository.SaveUserList(userList);
+                Models.UserList listDataEntry = DB.UserLists.Find(userList.ListId);
+
+                if (listDataEntry != null)
+                {
+                    listDataEntry.ListId = userList.ListId;
+                    listDataEntry.ListName = userList.ListName;
+                    listDataEntry.RowCount = userList.RowCount;
+                    listDataEntry.ColumnCount = userList.ColumnCount;
+                    listDataEntry.OwnerId = userList.OwnerId;
+                }
+                DB.SaveChanges();
 
                 TempData["message"] = string.Format("{0} has been saved", userList.ListName);
 

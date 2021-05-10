@@ -35,7 +35,7 @@ namespace FinalProjectAutoImplementedAuthentication.Models
         [Required(ErrorMessage = "Please enter the number of columns (This can be changed later)")]
         public int ColumnCount { get; set; }
 
-        //[HiddenInput(DisplayValue = false)]
+        [HiddenInput(DisplayValue = false)]
         public string OwnerId { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

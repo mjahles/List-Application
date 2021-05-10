@@ -290,7 +290,6 @@
     <Content Include="Views\List\OldCreateList.cshtml" />
     <Content Include="Views\List\DeleteList.cshtml" />
     <Content Include="Views\List\MyLists.cshtml" />
-    <Content Include="Views\List\CreateList.cshtml" />
     <Content Include="Views\List\EditList.cshtml" />
     <Content Include="Views\List\_Create.cshtml" />
   </ItemGroup>

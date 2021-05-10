@@ -18,6 +18,7 @@
     <Property Name="RowNum" Type="int" Nullable="false" />
     <Property Name="ColumnNum" Type="int" Nullable="false" />
     <Property Name="ListId" Type="int" Nullable="false" />
+    <Property Name="IsChecked" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="UserLists">
     <Key>

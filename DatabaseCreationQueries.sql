@@ -22,6 +22,7 @@ CREATE TABLE [dbo].[ListInfo]
     [RowNum] INT NOT NULL,
     [ColumnNum] INT NOT NULL,
     [ListId] INT NOT NULL,
+    [IsChecked]  BIT DEFAULT ((0)) NOT NULL,
     CONSTRAINT [FK_ListInfo_UserLists] FOREIGN KEY ([ListId]) REFERENCES [UserLists]([ListId])
 );
 

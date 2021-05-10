@@ -19,6 +19,7 @@
     <Property Name="ColumnNum" Type="Int32" Nullable="false" />
     <Property Name="ListId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="UserList" Relationship="ListDataModel.FK_ListInfo_UserLists" FromRole="ListInfo" ToRole="UserList" />
+    <Property Name="IsChecked" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="UserList">
     <Key>

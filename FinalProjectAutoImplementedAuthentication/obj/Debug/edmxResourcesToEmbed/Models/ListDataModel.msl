@@ -13,6 +13,7 @@
     <EntitySetMapping Name="ListInfoes">
       <EntityTypeMapping TypeName="ListDataModel.ListInfo">
         <MappingFragment StoreEntitySet="ListInfo">
+          <ScalarProperty Name="IsChecked" ColumnName="IsChecked" />
           <ScalarProperty Name="InfoId" ColumnName="InfoId" />
           <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
           <ScalarProperty Name="ColumnData" ColumnName="ColumnData" />

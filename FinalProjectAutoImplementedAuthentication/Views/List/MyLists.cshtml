@@ -56,7 +56,7 @@
                 <td>
                     @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
                     @Html.ActionLink("Details", "Details", new { item.ListId }) |
-                    <button class="btn btn-primary" id="delete_btn" onclick="_delete()">Delete</button>
+                    <button class="btn btn-primary" id="delete_btn" onclick="_delete(@item.ListId)">Delete</button>
                     @Html.ActionLink("Delete", "DeleteList", new { item.ListId })
                 </td>
             </tr>
@@ -90,7 +90,7 @@
                         <td>
                             @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
                             @Html.ActionLink("Details", "Details", new { item.ListId }) |
-                            @Html.ActionLink("Delete", "DeleteList", new { item.ListId })
+                            @Html.ActionLink("Delete", "DeleteList", new { listId = item.ListId })
                         </td>
                     </tr>
                 }
@@ -100,25 +100,35 @@
 </table>
 
 
-<div class="modal fade" id="ActionModal">
+<div class="modal fade" id="DeleteModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" class="close" data-dismiss="modal">&times;</a>
-                <h4 class="modal-title" id="modalTitle"></h4>
+                <h4 class="modal-Title">Delete List</h4>
             </div>
-            <div class="modal-body" id="modalbody"></div>
-            <div class="modal-footer"></div>
+            <div class="modal-body" id="DeleteBody">Are you sure you want to delete this list?</div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-danger" id="delYes" value="Delete" />
+                <input type="button" class="btn btn-info" data-dismiss="modal" value="Cancel" />
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    var _delete = function () {
-        var deleteURL = "/List/DeleteList";
-        $("#modalTitle").html("Delete List");
-        $("#modalbody").load(deleteURL, function () {
-            $("#ActionModal").modal("show");
+    var _delete = function (listId) {
+        $("#DeleteModal").modal("show");
+        $("#delYes").on("click", function () {
+            var deleteURL = "/List/DeleteList?ListId=" + listId;
+            $.ajax({
+                type: "post",
+                url: deleteURL,
+                success: function () {
+                    $("#DeleteModal").modal("hide");
+                    window.location.reload();
+                }
+            });
         });
     }
 </script>

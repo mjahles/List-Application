@@ -27,40 +27,40 @@
 <table class="table">
     @while (rowEnumerator <= rowCount)
     {
-    <tr id="row@(rowNumber) ">
-        @foreach (var info in Model.ListInfos)
-        {
-            if (info.ListId == listIdChecker)
+        <tr id="row@(rowNumber) ">
+            @foreach (var info in Model.ListInfos)
             {
-                if (info.RowNum == rowNumber)
+                if (info.ListId == listIdChecker)
                 {
-                    <td class="@(columnNumber)" style="width:auto;">
-                        @Html.EditorFor(modelInfo => info.ColumnData, "", $"row{rowNumber}" + $" column{columnNumber}")
-                    </td>
-                    // The empty set of quotes is used to define the template name. Since I am not using a template I leave the quotes empty. The extra string at the end is used to set the name attribute for the input tag that is created through the EditorFor method. This name attribute is used to identify the data that will be transferred into the database. 
-                    noRowData = false;
-                    columnNumber++;
-
-                    if (columnNumber > columnCount)
+                    if (info.RowNum == rowNumber)
                     {
-                        columnNumber = 1;
+                        <td class="@(columnNumber)" style="width:auto;">
+                            @Html.EditorFor(modelInfo => info.ColumnData, "", $"row{rowNumber}" + $" column{columnNumber}")
+                        </td>
+                        // The empty set of quotes is used to define the template name. Since I am not using a template I leave the quotes empty. The extra string at the end is used to set the name attribute for the input tag that is created through the EditorFor method. This name attribute is used to identify the data that will be transferred into the database.
+                        noRowData = false;
+                        columnNumber++;
+
+                        if (columnNumber > columnCount)
+                        {
+                            columnNumber = 1;
+                        }
                     }
                 }
-            }
 
-        }
-        @if (noRowData == true)
-        {
-            while (textBoxCounter <= columnCount)
-            {
-                <td class="@columnNumber" style="width:auto">
-                    @Html.TextBox($"row{rowNumber}" + $" column{columnNumber}")
-                </td>
-                textBoxCounter++;
-                columnNumber++;
             }
-        }
-    </tr>
+            @if (noRowData == true)
+            {
+                while (textBoxCounter <= columnCount)
+                {
+                    <td class="@columnNumber" style="width:auto">
+                        @Html.TextBox($"row{rowNumber}" + $" column{columnNumber}")
+                    </td>
+                    textBoxCounter++;
+                    columnNumber++;
+                }
+            }
+        </tr>
         textBoxCounter = 1;
         columnNumber = 1;
         rowNumber++;
@@ -69,23 +69,26 @@
     }
 
 </table>
-@foreach (var info in Model.ListInfos)
-{
-    @Html.DisplayFor(modelInfo => info.ListId)
-    @Html.DisplayFor(modelInfo => info.ColumnName)
-    @Html.DisplayFor(modelInfo => info.ColumnData)
-    @Html.DisplayFor(modelInfo => info.RowNum)
-    @Html.DisplayFor(modelInfo => info.ColumnNum)
-    @Html.DisplayFor(modelInfo => info.ListId)
-    @Html.DisplayFor(modelInfo => info.IsChecked)
-}
+
 
 @*
+        @foreach (var info in Model.ListInfos)
+    {
+        @Html.DisplayFor(modelInfo => info.ListId)
+        @Html.DisplayFor(modelInfo => info.ColumnName)
+        @Html.DisplayFor(modelInfo => info.ColumnData)
+        @Html.DisplayFor(modelInfo => info.RowNum)
+        @Html.DisplayFor(modelInfo => info.ColumnNum)
+        @Html.DisplayFor(modelInfo => info.ListId)
+        @Html.DisplayFor(modelInfo => info.IsChecked)
+    }
+
+
         listInfo.InfoId = info.InfoId;
-    listInfo.ColumnName = info.ColumnName;
-    listInfo.ColumnData = info.ColumnData;
-    listInfo.RowNum = info.RowNum;
-    listInfo.ColumnNum = info.ColumnNum;
-    listInfo.ListId = info.ListId;
-    listInfo.IsChecked = info.IsChecked;
+        listInfo.ColumnName = info.ColumnName;
+        listInfo.ColumnData = info.ColumnData;
+        listInfo.RowNum = info.RowNum;
+        listInfo.ColumnNum = info.ColumnNum;
+        listInfo.ListId = info.ListId;
+        listInfo.IsChecked = info.IsChecked;
 *@

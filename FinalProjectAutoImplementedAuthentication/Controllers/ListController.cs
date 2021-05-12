@@ -190,5 +190,33 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             return RedirectToAction("IndexList");
         }
 
+        [HttpGet]
+        public ActionResult ShareList(int listId)
+        {
+            return PartialView(listId);
+        }
+
+        [HttpPost]
+        public ActionResult ShareList(int listId, string searchedEmail)
+        {
+            return RedirectToAction("EditListInfo", listId);
+        }
+
+        public ActionResult DeleteAllSharedUsers(int listId)
+        {
+            List<ApprovedUser> deletedApprovedUsers = new List<ApprovedUser>();
+
+            foreach (var user in DB.ApprovedUsers)
+            {
+                if (listId == user.ListId)
+                {
+                    DB.ApprovedUsers.Remove(user);
+                }
+            }
+            DB.SaveChanges();
+
+            return RedirectToAction("IndexList");
+        }
+
     }
 }

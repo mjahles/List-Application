@@ -1,18 +1,22 @@
-﻿@model FinalProjectAutoImplementedAuthentication.Models.ListDataViewModel
+﻿@using FinalProjectAutoImplementedAuthentication.Models;
+@model FinalProjectAutoImplementedAuthentication.Models.ListDataViewModel
 
 @{
     ViewBag.Title = "EditListInfo";
 }
 
-@{ int rowCount = 0;
+@{  List<ListInfo> listInfoData = new List<ListInfo>();
+    int rowCount = 0;
     int columnCount = 0;
     int rowEnumerator = 0;
     int rowNumber = 1;
     int columnNumber = 1;
     int listIdChecker = (int)ViewData["listid"];
     bool noRowData = true;
-    int textBoxCounter = 1; }
+    int textBoxCounter = 1;
+    string searchedEmail = ""; }
 
+@* Finding the number of rows and columns to display *@
 @foreach (var item in Model.UserLists)
 {
     if (item.ListId == (int)ViewData["listId"])
@@ -22,45 +26,54 @@
     }
 }
 
+@* Creating a list that contains ListInfo objects from our list only *@
+@foreach (var entry in Model.ListInfos)
+{
+    if (entry.ListId == listIdChecker)
+    {
+        listInfoData.Add(entry);
+    }
+}
+
 <h2>EditListInfo</h2>
+
+<button class="btn btn-primary" id="share_btn" onclick="share(@searchedEmail)">Share</button>
 
 <table class="table">
     @while (rowEnumerator <= rowCount)
     {
-        <tr id="row@(rowNumber) ">
-            @foreach (var info in Model.ListInfos)
+    <tr id="row@(rowNumber) ">
+        @foreach (var info in listInfoData)
+        {
+            if (info.RowNum == rowNumber)
             {
-                if (info.ListId == listIdChecker)
+                if (info.ColumnNum == columnNumber)
                 {
-                    if (info.RowNum == rowNumber)
-                    {
-                        <td class="@(columnNumber)" style="width:auto;">
-                            @Html.EditorFor(modelInfo => info.ColumnData, "", $"row{rowNumber}" + $" column{columnNumber}")
-                        </td>
-                        // The empty set of quotes is used to define the template name. Since I am not using a template I leave the quotes empty. The extra string at the end is used to set the name attribute for the input tag that is created through the EditorFor method. This name attribute is used to identify the data that will be transferred into the database.
-                        noRowData = false;
-                        columnNumber++;
-
-                        if (columnNumber > columnCount)
-                        {
-                            columnNumber = 1;
-                        }
-                    }
-                }
-
-            }
-            @if (noRowData == true)
-            {
-                while (textBoxCounter <= columnCount)
-                {
-                    <td class="@columnNumber" style="width:auto">
-                        @Html.TextBox($"row{rowNumber}" + $" column{columnNumber}")
+                    <td class="@(columnNumber)" style="width:auto;">
+                        @Html.EditorFor(modelInfo => info.ColumnData, "", $"row{rowNumber}" + $" column{columnNumber}")
                     </td>
-                    textBoxCounter++;
+                    // The empty set of quotes is used to define the template name. Since I am not using a template I leave the quotes empty. The extra string at the end is used to set the name attribute for the input tag that is created through the EditorFor method. This name attribute is used to identify the data that will be transferred into the database.
+                    noRowData = false;
                     columnNumber++;
                 }
+                if (columnNumber > columnCount)
+                {
+                    columnNumber = 1;
+                }
             }
-        </tr>
+        }
+        @if (noRowData == true)
+        {
+            while (textBoxCounter <= columnCount)
+            {
+                <td class="@columnNumber" style="width:auto">
+                    @Html.TextBox($"row{rowNumber}" + $" column{columnNumber}")
+                </td>
+                textBoxCounter++;
+                columnNumber++;
+            }
+        }
+    </tr>
         textBoxCounter = 1;
         columnNumber = 1;
         rowNumber++;
@@ -69,6 +82,29 @@
     }
 
 </table>
+
+<div class="modal fade" id="ShareModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4 class="modal-title" id="modalTitle"></h4>
+            </div>
+            <div class="modal-body" id="modalbody">@Html.TextBox("searchedEmailText")</div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var create = function (searchEmail) {
+        var createURL = "/List/Create";
+        $("#modalTitle").html("Add new list data");
+        $("#modalbody").load(createURL, function () {
+            $("#ActionModal").modal("show");
+        });
+    }
+</script>
 
 
 @*

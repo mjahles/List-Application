@@ -34,7 +34,6 @@
                         if (item.ListId == info.ListId)
                         {
                             selectedList.InfoId = info.InfoId;
-                            selectedList.ColumnName = info.ColumnName;
                             selectedList.ColumnData = info.ColumnData;
                             selectedList.RowNum = info.RowNum;
                             selectedList.ColumnNum = info.ColumnNum;
@@ -71,29 +70,29 @@
         {
             if (appUser.UserId == ViewData["userid"].ToString() && appUser.ListId == item.ListId && item.OwnerId != appUser.UserId)
             {
-                if (!curListId.Contains(item.ListId))
-                {
-                    curListId.Add(item.ListId);
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ListName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RowCount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ColumnCount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OwnerId)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
-                            @Html.ActionLink("Details", "Details", new { item.ListId }) |
-                            @Html.ActionLink("Delete", "DeleteList", new { listId = item.ListId })
-                        </td>
-                    </tr>
-                }
+                //if (!curListId.Contains(item.ListId))
+                //{
+                //curListId.Add(item.ListId);
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ListName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RowCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ColumnCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OwnerId)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
+                        @Html.ActionLink("Details", "Details", new { item.ListId }) |
+                        @Html.ActionLink("Delete", "DeleteList", new { item.ListId })
+                    </td>
+                </tr>
+                //}
             }
         }
     }
@@ -120,22 +119,30 @@
     var _delete = function (listId) {
         $("#DeleteModal").modal("show");
         $("#delYes").on("click", function () {
-            var deleteInfoURL = "/List/DeleteListInfo?ListId=" + listId;
+            var deleteInfoURL = "/List/DeleteListInfo?ListId=" + listId;  // This URL references the function that removes all ListInfo entries with the corresponding ListId
             $.ajax({
                 type: "post",
                 url: deleteInfoURL,
                 success: function () {
-                    var deleteURL = "/List/DeleteList?ListId=" + listId;
+                    var deleteURL = "/List/DeleteList?ListId=" + listId;  // This URL references the function that removes the UserList entry with the corresponding ListId
                     $.ajax({
                         type: "post",
                         url: deleteURL,
                         success: function () {
-                            $("#DeleteModal").modal("hide");
-                            window.location.reload();
+                            var deleteSharedURL = "/List/DeleteAllSharedUsers?ListId=" + listId;  // This URL references the function that removes all ApprovedUsers entries with the corresponding ListId
+                            $.ajax({
+                                type: "post",
+                                url: deleteSharedURL,
+                                success: function () {
+                                    $("#DeleteModal").modal("hide");
+                                    window.location.reload();
+                                }
+                            });
                         }
                     });
                 }
             });
         });
     }
+    //We delete the ListInfo entries before the UserList entry in order to avoid an error that occurs when there is no primary key for a foreign key to reference. The ListId located in the ListInfo table is a foreign key to the UserList table which means that there must be a value for it to bind to. Because of this, the database will not let you delete that primary key before all foreign keys that reference it are deleted.
 </script>

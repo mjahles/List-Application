@@ -18,8 +18,7 @@
             <PropertyRef Name="InfoId" />
           </Key>
           <Property Name="InfoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ColumnName" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="ColumnData" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ColumnData" Type="varchar" MaxLength="50" />
           <Property Name="RowNum" Type="int" Nullable="false" />
           <Property Name="ColumnNum" Type="int" Nullable="false" />
           <Property Name="ListId" Type="int" Nullable="false" />
@@ -73,8 +72,7 @@
             <PropertyRef Name="InfoId" />
           </Key>
           <Property Name="InfoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ColumnName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ColumnData" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ColumnData" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="RowNum" Type="Int32" Nullable="false" />
           <Property Name="ColumnNum" Type="Int32" Nullable="false" />
           <Property Name="ListId" Type="Int32" Nullable="false" />
@@ -133,7 +131,6 @@
               <MappingFragment StoreEntitySet="ListInfo">
                 <ScalarProperty Name="IsChecked" ColumnName="IsChecked" />
                 <ScalarProperty Name="InfoId" ColumnName="InfoId" />
-                <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
                 <ScalarProperty Name="ColumnData" ColumnName="ColumnData" />
                 <ScalarProperty Name="RowNum" ColumnName="RowNum" />
                 <ScalarProperty Name="ColumnNum" ColumnName="ColumnNum" />

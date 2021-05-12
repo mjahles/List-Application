@@ -13,8 +13,7 @@
       <PropertyRef Name="InfoId" />
     </Key>
     <Property Name="InfoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ColumnName" Type="varchar" MaxLength="25" Nullable="false" />
-    <Property Name="ColumnData" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ColumnData" Type="varchar" MaxLength="50" />
     <Property Name="RowNum" Type="int" Nullable="false" />
     <Property Name="ColumnNum" Type="int" Nullable="false" />
     <Property Name="ListId" Type="int" Nullable="false" />

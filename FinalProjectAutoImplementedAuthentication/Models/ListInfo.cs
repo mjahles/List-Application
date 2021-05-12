@@ -15,7 +15,6 @@ namespace FinalProjectAutoImplementedAuthentication.Models
     public partial class ListInfo
     {
         public int InfoId { get; set; }
-        public string ColumnName { get; set; }
         public string ColumnData { get; set; }
         public int RowNum { get; set; }
         public int ColumnNum { get; set; }

@@ -4,26 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FinalProjectAutoImplementedAuthentication.Models;
-using FinalProjectAutoImplementedAuthentication.Abstract;
-using FinalProjectAutoImplementedAuthentication.Entities;
 using Microsoft.AspNet.Identity;
 
 namespace FinalProjectAutoImplementedAuthentication.Controllers
 {
     public class ListController : Controller
     {
-        private IUserListRespository repository;
-
-        public ListController(IUserListRespository repo)
-        {
-            repository = repo;
-        }
-
-        public ListController()
-        {
-          
-        }
-
         ListDataEntities DB = new ListDataEntities();
         // GET: List
         [Authorize]
@@ -31,7 +17,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
         {
             List<ApprovedUser> approvedUsers = DB.ApprovedUsers.ToList();
             List<ListInfo> listInfos = DB.ListInfoes.ToList();
-            List<Models.UserList> userLists = DB.UserLists.ToList();
+            List<UserList> userLists = DB.UserLists.ToList();
 
             ListDataViewModel model = new ListDataViewModel()
             {
@@ -52,7 +38,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             //return View();
             List<ApprovedUser> approvedUsers = DB.ApprovedUsers.ToList();
             List<ListInfo> listInfos = DB.ListInfoes.ToList();
-            List<Models.UserList> userLists = DB.UserLists.ToList();
+            List<UserList> userLists = DB.UserLists.ToList();
 
             ListDataViewModel model = new ListDataViewModel()
             {
@@ -76,7 +62,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Models.UserList userList)
+        public ActionResult Create(UserList userList)
         {
             ViewData["userid"] = User.Identity.GetUserId();
 
@@ -84,7 +70,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             {
                 if (userList != null)
                 {
-                    Models.UserList listData = new Models.UserList();
+                    UserList listData = new UserList();
                     listData.ListId = userList.ListId;
                     listData.ListName = userList.ListName;
                     listData.RowCount = userList.RowCount;
@@ -108,21 +94,21 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             ViewData["userid"] = User.Identity.GetUserId();
             ViewBag.Heading = "Edit List";
 
-            List<Models.UserList> repositoryUserLists = DB.UserLists.ToList();
+            List<UserList> repositoryUserLists = DB.UserLists.ToList();
 
             //ViewData["selectedRecord"] = listId;
 
-            Models.UserList editableUserList = repositoryUserLists
+            UserList editableUserList = repositoryUserLists
                 .FirstOrDefault(x => x.ListId == listId);
             return View(editableUserList); //This renders for some reason. Doesn't save changes though
         }
 
         [HttpPost]
-        public ActionResult EditList(Models.UserList userList)
+        public ActionResult EditList(UserList userList)
         {
             if (ModelState.IsValid)
             {
-                Models.UserList listDataEntry = DB.UserLists.Find(userList.ListId);
+                UserList listDataEntry = DB.UserLists.Find(userList.ListId);
 
                 if (listDataEntry != null)
                 {
@@ -149,15 +135,15 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
         [HttpGet]
         public ActionResult DeleteList(int listId)
         {
-            Models.UserList deletedEntry = DB.UserLists.Find(listId);
+            UserList deletedEntry = DB.UserLists.Find(listId);
 
             return View(deletedEntry);
         }
 
         [HttpPost]
-        public ActionResult DeleteList(Models.UserList listDataEntry) //Takes in the ListId as a parameter to locate the list that is to be deleted.
+        public ActionResult DeleteList(UserList listDataEntry) //Takes in the ListId as a parameter to locate the list that is to be deleted.
         {
-            Models.UserList deletedEntry = DB.UserLists.Find(listDataEntry.ListId);
+            UserList deletedEntry = DB.UserLists.Find(listDataEntry.ListId);
 
             if (deletedEntry.OwnerId == User.Identity.GetUserId())
             {
@@ -169,5 +155,24 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             }
             return RedirectToAction("IndexList");
         }
+
+        public ActionResult EditListInfo(ListInfo listInfo)
+        {
+            ViewData["listId"] = listInfo.ListId;
+
+            List<ApprovedUser> approvedUsers = DB.ApprovedUsers.ToList();
+            List<ListInfo> listInfos = DB.ListInfoes.ToList();
+            List<UserList> userLists = DB.UserLists.ToList();
+
+            ListDataViewModel model = new ListDataViewModel()
+            {
+                ApprovedUsers = approvedUsers,
+                ListInfos = listInfos,
+                UserLists = userLists
+            };
+
+            return View(model);
+        }
+
     }
 }

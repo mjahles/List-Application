@@ -1,4 +1,5 @@
-﻿@model FinalProjectAutoImplementedAuthentication.Models.ListDataViewModel
+﻿@using FinalProjectAutoImplementedAuthentication.Models;
+@model FinalProjectAutoImplementedAuthentication.Models.ListDataViewModel
 
 <table class="table">
     <tr>
@@ -20,13 +21,28 @@
         }
     </tr>
 
+    @{ ListInfo selectedList = new ListInfo(); }
+
     @foreach (var item in Model.UserLists)
     {
         if (item.OwnerId == ViewData["userid"].ToString())
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ListName)
+                    @foreach (var info in Model.ListInfos)
+                    {
+                        if (item.ListId == info.ListId)
+                        {
+                            selectedList.InfoId = info.InfoId;
+                            selectedList.ColumnName = info.ColumnName;
+                            selectedList.ColumnData = info.ColumnData;
+                            selectedList.RowNum = info.RowNum;
+                            selectedList.ColumnNum = info.ColumnNum;
+                            selectedList.ListId = info.ListId;
+                            selectedList.IsChecked = info.IsChecked;
+                        }
+                    }
+                    @Html.ActionLink(item.ListName, "EditListInfo", new { item.ListId })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RowCount)

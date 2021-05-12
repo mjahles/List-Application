@@ -11,6 +11,8 @@ namespace FinalProjectAutoImplementedAuthentication.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
     
     public partial class UserList
     {
@@ -19,13 +21,23 @@ namespace FinalProjectAutoImplementedAuthentication.Models
         {
             this.ListInfoes = new HashSet<ListInfo>();
         }
-    
+
+        [HiddenInput(DisplayValue = false)]
+        [Key]
         public int ListId { get; set; }
+
+        [Required(ErrorMessage = "Please enter a list name")]
         public string ListName { get; set; }
+
+        [Required(ErrorMessage = "Please enter the number of rows (This can be changed later)")]
         public int RowCount { get; set; }
+
+        [Required(ErrorMessage = "Please enter the number of columns (This can be changed later)")]
         public int ColumnCount { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
         public string OwnerId { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ListInfo> ListInfoes { get; set; }
     }

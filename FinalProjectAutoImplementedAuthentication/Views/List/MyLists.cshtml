@@ -120,13 +120,20 @@
     var _delete = function (listId) {
         $("#DeleteModal").modal("show");
         $("#delYes").on("click", function () {
-            var deleteURL = "/List/DeleteList?ListId=" + listId;
+            var deleteInfoURL = "/List/DeleteListInfo?ListId=" + listId;
             $.ajax({
                 type: "post",
-                url: deleteURL,
+                url: deleteInfoURL,
                 success: function () {
-                    $("#DeleteModal").modal("hide");
-                    window.location.reload();
+                    var deleteURL = "/List/DeleteList?ListId=" + listId;
+                    $.ajax({
+                        type: "post",
+                        url: deleteURL,
+                        success: function () {
+                            $("#DeleteModal").modal("hide");
+                            window.location.reload();
+                        }
+                    });
                 }
             });
         });

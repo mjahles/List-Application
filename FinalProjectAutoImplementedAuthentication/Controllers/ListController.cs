@@ -174,5 +174,21 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             return View(model);
         }
 
+        public ActionResult DeleteListInfo(int listId)
+        {
+            List<ListInfo> deletedListInfo = new List<ListInfo>();
+
+            foreach (var entry in DB.ListInfoes)
+            {
+                if (listId == entry.ListId)
+                {
+                    DB.ListInfoes.Remove(entry);
+                }
+            }
+            DB.SaveChanges();
+
+            return RedirectToAction("IndexList");
+        }
+
     }
 }

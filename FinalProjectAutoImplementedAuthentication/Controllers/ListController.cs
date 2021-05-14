@@ -100,7 +100,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
 
             UserList editableUserList = repositoryUserLists
                 .FirstOrDefault(x => x.ListId == listId);
-            return View(editableUserList); //This renders for some reason. Doesn't save changes though
+            return View(editableUserList);
         }
 
         [HttpPost]
@@ -156,9 +156,10 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             return RedirectToAction("IndexList");
         }
 
-        public ActionResult EditListInfo(ListInfo listInfo)
+        [HttpGet]
+        public ActionResult EditListInfo(UserList userList)
         {
-            ViewData["listId"] = listInfo.ListId;
+            ViewData["listId"] = userList.ListId;
 
             List<ApprovedUser> approvedUsers = DB.ApprovedUsers.ToList();
             List<ListInfo> listInfos = DB.ListInfoes.ToList();
@@ -172,6 +173,43 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditListInfo(ListDataViewModel modelData) // This doesnt work
+        {
+            if (ModelState.IsValid)
+            {
+                if (modelData.ListInfos != null)
+                {
+                    foreach (var info in modelData.ListInfos)
+                    {
+                        var dbRecord = DB.ListInfoes.Find(info);
+                        
+                        if (dbRecord != null)
+                        {
+                            dbRecord.InfoId = info.InfoId;
+                            dbRecord.ColumnData = info.ColumnData;
+                            dbRecord.RowNum = info.RowNum;
+                            dbRecord.ColumnNum = info.ColumnNum;
+                            dbRecord.ListId = info.ListId;
+                            dbRecord.IsChecked = info.IsChecked;
+                        }
+                        if (dbRecord == null)
+                        {
+                            DB.ListInfoes.Add(info);
+                        }
+                    }
+                    DB.SaveChanges();
+                }
+                return RedirectToAction("EditListInfo", modelData.UserLists.FirstOrDefault().ListId);
+            }
+            //IEnumerable<ListInfo> entryEnumerable = modelData.ListInfos;
+            //DB.ListInfoes.AddRange(entryEnumerable);
+            //DB.SaveChanges();
+
+            return View("IndexList");
         }
 
         public ActionResult DeleteListInfo(int listId)
@@ -215,6 +253,33 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             }
             DB.SaveChanges();
 
+            return RedirectToAction("IndexList");
+        }
+
+        public ActionResult CreateRows(UserList userList)
+        {
+            var rowNumber = 1;
+            var columnNumber = 1;
+
+            while (rowNumber <= userList.RowCount)
+            {
+                while (columnNumber <= userList.ColumnCount)
+                {
+                    ListInfo listInfo = new ListInfo();
+                    listInfo.ColumnData = "";
+                    listInfo.RowNum = rowNumber;
+                    listInfo.ColumnNum = columnNumber;
+                    listInfo.ListId = userList.ListId;
+                    listInfo.IsChecked = false;
+
+                    DB.ListInfoes.Add(listInfo);
+
+                    columnNumber++;
+                }
+                rowNumber++;
+                columnNumber = 1;
+            }
+            DB.SaveChanges();
             return RedirectToAction("IndexList");
         }
 

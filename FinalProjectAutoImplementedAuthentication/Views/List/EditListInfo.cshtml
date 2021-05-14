@@ -5,7 +5,7 @@
     ViewBag.Title = "EditListInfo";
 }
 
-@{  List<ListInfo> listInfoData = new List<ListInfo>();
+@{ List<ListInfo> listInfoData = new List<ListInfo>();
     int rowCount = 0;
     int columnCount = 0;
     int rowEnumerator = 0;
@@ -14,7 +14,10 @@
     int listIdChecker = (int)ViewData["listid"];
     bool noRowData = true;
     int textBoxCounter = 1;
-    string searchedEmail = ""; }
+    string searchedEmail = "";
+    List<ListInfo> dataReceptacle = new List<ListInfo>();
+    int rowSaver = 1;
+    int columnSaver = 1; }
 
 @* Finding the number of rows and columns to display *@
 @foreach (var item in Model.UserLists)
@@ -39,49 +42,71 @@
 
 <button class="btn btn-primary" id="share_btn" onclick="share(@searchedEmail)">Share</button>
 
-<table class="table">
-    @while (rowEnumerator <= rowCount)
-    {
-    <tr id="row@(rowNumber) ">
-        @foreach (var info in listInfoData)
-        {
-            if (info.RowNum == rowNumber)
-            {
-                if (info.ColumnNum == columnNumber)
-                {
-                    <td class="@(columnNumber)" style="width:auto;">
-                        @Html.EditorFor(modelInfo => info.ColumnData, "", $"row{rowNumber}" + $" column{columnNumber}")
-                    </td>
-                    // The empty set of quotes is used to define the template name. Since I am not using a template I leave the quotes empty. The extra string at the end is used to set the name attribute for the input tag that is created through the EditorFor method. This name attribute is used to identify the data that will be transferred into the database.
-                    noRowData = false;
-                    columnNumber++;
-                }
-                if (columnNumber > columnCount)
-                {
-                    columnNumber = 1;
-                }
-            }
-        }
-        @if (noRowData == true)
-        {
-            while (textBoxCounter <= columnCount)
-            {
-                <td class="@columnNumber" style="width:auto">
-                    @Html.TextBox($"row{rowNumber}" + $" column{columnNumber}")
-                </td>
-                textBoxCounter++;
-                columnNumber++;
-            }
-        }
-    </tr>
-        textBoxCounter = 1;
-        columnNumber = 1;
-        rowNumber++;
-        rowEnumerator++;
-        noRowData = true;
-    }
+@using (Html.BeginForm("EditListInfo", "List", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
 
-</table>
+    <table class="table">
+        @while (rowEnumerator <= rowCount)
+        {
+            <tr id="row@(rowNumber) ">
+                @foreach (var info in listInfoData)
+                {
+                    if (info.RowNum == rowNumber)
+                    {
+                        if (info.ColumnNum == columnNumber)
+                        {
+                            <td class="@(columnNumber)" style="width:auto;">
+                                @Html.HiddenFor(modelInfo => info.InfoId)
+                                @Html.EditorFor(modelInfo => info.ColumnData, "", $"row{rowNumber}" + $" column{columnNumber}")
+                                @Html.HiddenFor(modelInfo => info.RowNum)
+                                @Html.HiddenFor(modelInfo => info.ColumnNum)
+                                @Html.HiddenFor(modelInfo => info.ListId)
+                                @Html.HiddenFor(modelInfo => info.IsChecked)
+                            </td>
+                            // The empty set of quotes is used to define the template name. Since I am not using a template I leave the quotes empty. The extra string at the end is used to set the name attribute for the input tag that is created through the EditorFor method. This name attribute is used to identify the data that will be transferred into the database.
+                            noRowData = false;
+                            columnNumber++;
+                        }
+                        if (columnNumber > columnCount)
+                        {
+                            columnNumber = 1;
+                        }
+                    }
+                }
+                @*@if (noRowData == true)
+                {
+                    while (textBoxCounter <= columnCount)
+                    {
+                        <td class="@columnNumber" style="width:auto">
+                            @Html.TextBox($"row{rowNumber}" + $" column{columnNumber}")
+                        </td>
+                        textBoxCounter++;
+                        columnNumber++;
+                    }
+                }*@
+            </tr>
+            textBoxCounter = 1;
+            columnNumber = 1;
+            rowNumber++;
+            rowEnumerator++;
+            noRowData = true;
+        }
+
+        @*@while (rowSaver <= rowCount)
+        {
+            
+        }*@
+
+    </table>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" /> 
+        </div>
+    </div>
+    // Currently unable to send data back to the database from this page. I need to figure out a way to get all of the data from the various text-boxes editorfor methods back to the HttpPost version of the EditListInfo method.  Currently am trying to add all of the data to a list and pass the list back through.  Not sure of the formatting for doing that though.
+}
+
 
 <div class="modal fade" id="ShareModal">
     <div class="modal-dialog">

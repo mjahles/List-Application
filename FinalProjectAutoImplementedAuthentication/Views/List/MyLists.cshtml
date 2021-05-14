@@ -55,6 +55,7 @@
                 <td>
                     @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
                     @Html.ActionLink("Details", "Details", new { item.ListId }) |
+                    @Html.ActionLink("CreateRows", "CreateRows", item)
                     <button class="btn btn-primary" id="delete_btn" onclick="_delete(@item.ListId)">Delete</button>
                     @Html.ActionLink("Delete", "DeleteList", new { item.ListId })
                 </td>

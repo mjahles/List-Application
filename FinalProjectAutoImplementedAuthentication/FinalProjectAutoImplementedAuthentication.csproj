@@ -189,6 +189,7 @@
     <Compile Include="Models\AspNetUser.cs">
       <DependentUpon>UserModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EditListInfoViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ListDataModel.Context.cs">
       <AutoGen>True</AutoGen>

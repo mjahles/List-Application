@@ -11,9 +11,12 @@ namespace FinalProjectAutoImplementedAuthentication.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Web.Mvc;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class ListInfo
     {
+        [Key]
         public int InfoId { get; set; }
         public string ColumnData { get; set; }
         public int RowNum { get; set; }

@@ -11,9 +11,13 @@ namespace FinalProjectAutoImplementedAuthentication.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Web.Mvc;
+    using System.ComponentModel.DataAnnotations;
+
+
     public partial class ApprovedUser
     {
+        [Key]
         public int AppUserId { get; set; }
         public string UserId { get; set; }
         public int ListId { get; set; }

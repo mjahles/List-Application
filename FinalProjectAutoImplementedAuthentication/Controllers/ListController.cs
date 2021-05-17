@@ -157,59 +157,76 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditListInfo(UserList userList)
+        public ActionResult EditListInfo(int listId)
         {
-            ViewData["listId"] = userList.ListId;
-            ViewBag.Heading = userList.ListName;
+            UserList userList = DB.UserLists.Find(listId);
 
-            List<ApprovedUser> approvedUsers = DB.ApprovedUsers.ToList();
-            List<ListInfo> listInfos = DB.ListInfoes.ToList();
-            List<UserList> userLists = DB.UserLists.ToList();
+            ViewData["listId"] = listId;
+            ViewData["rowCount"] = userList.RowCount;
+            ViewData["columnCount"] = userList.ColumnCount;
+            ViewBag.Heading = listId;
+            List<ListInfo> listInfos = new List<ListInfo>();
 
-            ListDataViewModel model = new ListDataViewModel()
+            foreach (var info in DB.ListInfoes.ToList().Where(x => x.ListId == listId))
+            {
+                listInfos.Add(info);
+            }
+
+            IEnumerable<ListInfo> listData = listInfos;
+
+            EditListInfoViewModel modelInput = new EditListInfoViewModel()
+            {
+                ListInfos = listData.ToList()
+            };
+
+            //List<ApprovedUser> approvedUsers = DB.ApprovedUsers.ToList();
+            //List<ListInfo> listInfos = DB.ListInfoes.ToList();
+            //List<UserList> userLists = DB.UserLists.ToList();
+
+            /*ListDataViewModel model = new ListDataViewModel()
             {
                 ApprovedUsers = approvedUsers,
                 ListInfos = listInfos,
                 UserLists = userLists
             };
 
-            return View(model);
+            return View(model);*/
+            return View(listData);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditListInfo(ListDataViewModel modelData) // This doesnt work
+        public ActionResult EditListInfo(List<ListInfo> modelData)
         {
             if (ModelState.IsValid)
             {
-                if (modelData.ListInfos != null)
+                if (modelData != null)
                 {
-                    foreach (var info in modelData.ListInfos)
+                    foreach (var info in modelData)
                     {
-                        var dbRecord = DB.ListInfoes.Find(info);
-                        
-                        if (dbRecord != null)
+                        //if (info.ListId == (int)ViewData["idChecker"])
                         {
-                            dbRecord.InfoId = info.InfoId;
-                            dbRecord.ColumnData = info.ColumnData;
-                            dbRecord.RowNum = info.RowNum;
-                            dbRecord.ColumnNum = info.ColumnNum;
-                            dbRecord.ListId = info.ListId;
-                            dbRecord.IsChecked = info.IsChecked;
-                        }
-                        if (dbRecord == null)
-                        {
-                            DB.ListInfoes.Add(info);
+                            ListInfo dbRecord = DB.ListInfoes.Find(info.InfoId);
+
+                            if (dbRecord != null)
+                            {
+                                dbRecord.InfoId = info.InfoId;
+                                dbRecord.ColumnData = info.ColumnData;
+                                dbRecord.RowNum = info.RowNum;
+                                dbRecord.ColumnNum = info.ColumnNum;
+                                dbRecord.ListId = info.ListId;
+                                dbRecord.IsChecked = info.IsChecked;
+                            }
+                            if (dbRecord == null)
+                            {
+                                DB.ListInfoes.Add(info);
+                            }
                         }
                     }
                     DB.SaveChanges();
                 }
-                return RedirectToAction("EditListInfo", modelData.UserLists.FirstOrDefault().ListId);
+                return RedirectToAction("IndexList");
             }
-            //IEnumerable<ListInfo> entryEnumerable = modelData.ListInfos;
-            //DB.ListInfoes.AddRange(entryEnumerable);
-            //DB.SaveChanges();
-
             return View("IndexList");
         }
 

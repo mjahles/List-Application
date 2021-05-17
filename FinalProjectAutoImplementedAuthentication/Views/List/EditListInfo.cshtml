@@ -2,8 +2,8 @@
 @model FinalProjectAutoImplementedAuthentication.Models.ListDataViewModel
 
 @{
-    ViewBag.Title = "EditListInfo";
-}
+        ViewBag.Title = "Heading";
+    }
 
 @{ List<ListInfo> listInfoData = new List<ListInfo>();
     int rowCount = 0;
@@ -38,7 +38,7 @@
     }
 }
 
-<h2>EditListInfo</h2>
+<h2>@ViewBag.Heading</h2>
 
 <button class="btn btn-primary" id="share_btn" onclick="share(@searchedEmail)">Share</button>
 

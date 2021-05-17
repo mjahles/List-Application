@@ -17,5 +17,7 @@ namespace FinalProjectAutoImplementedAuthentication.Models
         public int AppUserId { get; set; }
         public string UserId { get; set; }
         public int ListId { get; set; }
+    
+        public virtual UserList UserList { get; set; }
     }
 }

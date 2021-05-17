@@ -34,6 +34,18 @@
           <Property Name="ColumnCount" Type="int" Nullable="false" />
           <Property Name="OwnerId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
+        <Association Name="FK_ApprovedUsers_UserLists">
+          <End Role="UserLists" Type="Self.UserLists" Multiplicity="1" />
+          <End Role="ApprovedUsers" Type="Self.ApprovedUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserLists">
+              <PropertyRef Name="ListId" />
+            </Principal>
+            <Dependent Role="ApprovedUsers">
+              <PropertyRef Name="ListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ListInfo_UserLists">
           <End Role="UserLists" Type="Self.UserLists" Multiplicity="1" />
           <End Role="ListInfo" Type="Self.ListInfo" Multiplicity="*" />
@@ -50,6 +62,10 @@
           <EntitySet Name="ApprovedUsers" EntityType="Self.ApprovedUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ListInfo" EntityType="Self.ListInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLists" EntityType="Self.UserLists" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ApprovedUsers_UserLists" Association="Self.FK_ApprovedUsers_UserLists">
+            <End Role="UserLists" EntitySet="UserLists" />
+            <End Role="ApprovedUsers" EntitySet="ApprovedUsers" />
+          </AssociationSet>
           <AssociationSet Name="FK_ListInfo_UserLists" Association="Self.FK_ListInfo_UserLists">
             <End Role="UserLists" EntitySet="UserLists" />
             <End Role="ListInfo" EntitySet="ListInfo" />
@@ -66,6 +82,7 @@
           <Property Name="AppUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ListId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserList" Relationship="ListDataModel.FK_ApprovedUsers_UserLists" FromRole="ApprovedUser" ToRole="UserList" />
         </EntityType>
         <EntityType Name="ListInfo">
           <Key>
@@ -89,6 +106,7 @@
           <Property Name="ColumnCount" Type="Int32" Nullable="false" />
           <Property Name="OwnerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="ListInfoes" Relationship="ListDataModel.FK_ListInfo_UserLists" FromRole="UserList" ToRole="ListInfo" />
+          <NavigationProperty Name="ApprovedUsers" Relationship="ListDataModel.FK_ApprovedUsers_UserLists" FromRole="UserList" ToRole="ApprovedUser" />
         </EntityType>
         <EntityContainer Name="ListDataEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ApprovedUsers" EntityType="Self.ApprovedUser" />
@@ -97,6 +115,10 @@
           <AssociationSet Name="FK_ListInfo_UserLists" Association="ListDataModel.FK_ListInfo_UserLists">
             <End Role="UserList" EntitySet="UserLists" />
             <End Role="ListInfo" EntitySet="ListInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovedUsers_UserLists" Association="ListDataModel.FK_ApprovedUsers_UserLists">
+            <End Role="UserList" EntitySet="UserLists" />
+            <End Role="ApprovedUser" EntitySet="ApprovedUsers" />
           </AssociationSet>
         </EntityContainer>
         <Association Name="FK_ListInfo_UserLists">
@@ -107,6 +129,18 @@
               <PropertyRef Name="ListId" />
             </Principal>
             <Dependent Role="ListInfo">
+              <PropertyRef Name="ListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovedUsers_UserLists">
+          <End Type="ListDataModel.UserList" Role="UserList" Multiplicity="1" />
+          <End Type="ListDataModel.ApprovedUser" Role="ApprovedUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserList">
+              <PropertyRef Name="ListId" />
+            </Principal>
+            <Dependent Role="ApprovedUser">
               <PropertyRef Name="ListId" />
             </Dependent>
           </ReferentialConstraint>

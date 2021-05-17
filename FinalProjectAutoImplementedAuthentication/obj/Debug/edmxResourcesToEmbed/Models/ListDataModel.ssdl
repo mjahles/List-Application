@@ -29,6 +29,18 @@
     <Property Name="ColumnCount" Type="int" Nullable="false" />
     <Property Name="OwnerId" Type="nvarchar" MaxLength="128" Nullable="false" />
   </EntityType>
+  <Association Name="FK_ApprovedUsers_UserLists">
+    <End Role="UserLists" Type="Self.UserLists" Multiplicity="1" />
+    <End Role="ApprovedUsers" Type="Self.ApprovedUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserLists">
+        <PropertyRef Name="ListId" />
+      </Principal>
+      <Dependent Role="ApprovedUsers">
+        <PropertyRef Name="ListId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ListInfo_UserLists">
     <End Role="UserLists" Type="Self.UserLists" Multiplicity="1" />
     <End Role="ListInfo" Type="Self.ListInfo" Multiplicity="*" />
@@ -45,6 +57,10 @@
     <EntitySet Name="ApprovedUsers" EntityType="Self.ApprovedUsers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ListInfo" EntityType="Self.ListInfo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserLists" EntityType="Self.UserLists" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ApprovedUsers_UserLists" Association="Self.FK_ApprovedUsers_UserLists">
+      <End Role="UserLists" EntitySet="UserLists" />
+      <End Role="ApprovedUsers" EntitySet="ApprovedUsers" />
+    </AssociationSet>
     <AssociationSet Name="FK_ListInfo_UserLists" Association="Self.FK_ListInfo_UserLists">
       <End Role="UserLists" EntitySet="UserLists" />
       <End Role="ListInfo" EntitySet="ListInfo" />

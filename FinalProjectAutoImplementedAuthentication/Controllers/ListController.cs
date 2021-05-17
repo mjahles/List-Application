@@ -160,6 +160,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
         public ActionResult EditListInfo(UserList userList)
         {
             ViewData["listId"] = userList.ListId;
+            ViewBag.Heading = userList.ListName;
 
             List<ApprovedUser> approvedUsers = DB.ApprovedUsers.ToList();
             List<ListInfo> listInfos = DB.ListInfoes.ToList();

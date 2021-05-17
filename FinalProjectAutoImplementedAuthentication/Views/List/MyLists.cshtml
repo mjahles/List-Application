@@ -3,22 +3,18 @@
 
 <table class="table">
     <tr>
-        @foreach (var label in Model.UserLists)
-        {
             <th>
-                @Html.DisplayNameFor(modelLabel => label.ListName)
+                @Html.DisplayNameFor(modelLabel => modelLabel.UserList.ListName)
             </th>
             <th>
-                @Html.DisplayNameFor(modelLabel => label.RowCount)
+                @Html.DisplayNameFor(modelLabel => modelLabel.UserList.RowCount)
             </th>
             <th>
-                @Html.DisplayNameFor(modelLabel => label.ColumnCount)
+                @Html.DisplayNameFor(modelLabel => modelLabel.UserList.ColumnCount)
             </th>
             <th>
-                @Html.DisplayNameFor(modelLabel => label.OwnerId)
+                @Html.DisplayNameFor(modelLabel => modelLabel.UserList.OwnerId)
             </th>
-            break;
-        }
     </tr>
 
     @{ ListInfo selectedList = new ListInfo(); }
@@ -57,7 +53,7 @@
                     @Html.ActionLink("Details", "Details", new { item.ListId }) |
                     @Html.ActionLink("CreateRows", "CreateRows", item)
                     <button class="btn btn-primary" id="delete_btn" onclick="_delete(@item.ListId)">Delete</button>
-                    @Html.ActionLink("Delete", "DeleteList", new { item.ListId })
+                    @*@Html.ActionLink("Delete", "DeleteList", new { item.ListId })*@
                 </td>
             </tr>
         }
@@ -90,7 +86,7 @@
                     <td>
                         @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
                         @Html.ActionLink("Details", "Details", new { item.ListId }) |
-                        @Html.ActionLink("Delete", "DeleteList", new { item.ListId })
+                        @*@Html.ActionLink("Delete", "DeleteList", new { item.ListId })*@
                     </td>
                 </tr>
                 //}
@@ -125,15 +121,15 @@
                 type: "post",
                 url: deleteInfoURL,
                 success: function () {
-                    var deleteURL = "/List/DeleteList?ListId=" + listId;  // This URL references the function that removes the UserList entry with the corresponding ListId
+                    var deleteSharedURL = "/List/DeleteAllSharedUsers?ListId=" + listId;  // This URL references the function that removes all ApprovedUsers entries with the corresponding ListId
                     $.ajax({
                         type: "post",
-                        url: deleteURL,
+                        url: deleteSharedURL,
                         success: function () {
-                            var deleteSharedURL = "/List/DeleteAllSharedUsers?ListId=" + listId;  // This URL references the function that removes all ApprovedUsers entries with the corresponding ListId
+                            var deleteURL = "/List/DeleteList?ListId=" + listId;  // This URL references the function that removes the UserList entry with the corresponding ListId
                             $.ajax({
                                 type: "post",
-                                url: deleteSharedURL,
+                                url: deleteURL,
                                 success: function () {
                                     $("#DeleteModal").modal("hide");
                                     window.location.reload();

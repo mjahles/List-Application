@@ -7,8 +7,9 @@
       <Diagram DiagramId="88bc5a8a40a84291bf2f9fa114deaa5f" Name="Diagram1">
         <EntityTypeShape EntityType="ListDataModel.ApprovedUser" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ListDataModel.ListInfo" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ListDataModel.UserList" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ListDataModel.UserList" Width="1.5" PointX="1.125" PointY="4.375" IsExpanded="true" />
         <AssociationConnector Association="ListDataModel.FK_ListInfo_UserLists" />
+        <AssociationConnector Association="ListDataModel.FK_ApprovedUsers_UserLists" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

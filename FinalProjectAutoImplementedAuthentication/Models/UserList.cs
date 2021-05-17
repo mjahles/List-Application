@@ -20,6 +20,7 @@ namespace FinalProjectAutoImplementedAuthentication.Models
         public UserList()
         {
             this.ListInfoes = new HashSet<ListInfo>();
+            this.ApprovedUsers = new HashSet<ApprovedUser>();
         }
 
         [HiddenInput(DisplayValue = false)]
@@ -40,5 +41,7 @@ namespace FinalProjectAutoImplementedAuthentication.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ListInfo> ListInfoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ApprovedUser> ApprovedUsers { get; set; }
     }
 }

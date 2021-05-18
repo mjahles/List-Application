@@ -16,10 +16,14 @@ namespace FinalProjectAutoImplementedAuthentication.Models
     
     public partial class AspNetUser
     {
-        [Key]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public AspNetUser()
+        {
+            this.ApprovedUsers = new HashSet<ApprovedUser>();
+            this.UserLists = new HashSet<UserList>();
+        }
         [HiddenInput(DisplayValue = false)]
         public string Id { get; set; }
-
         public string Email { get; set; }
 
         [HiddenInput(DisplayValue = false)]
@@ -48,8 +52,11 @@ namespace FinalProjectAutoImplementedAuthentication.Models
 
         [HiddenInput(DisplayValue = false)]
         public int AccessFailedCount { get; set; }
-
-        [HiddenInput(DisplayValue = false)]
         public string UserName { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ApprovedUser> ApprovedUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserList> UserLists { get; set; }
     }
 }

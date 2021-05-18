@@ -9,9 +9,7 @@ namespace FinalProjectAutoImplementedAuthentication.Models
 {
     public class ShareListViewModel
     {
-        [Key]
-        public ListInfo listInfo { get; set; }
-        public AspNetUser aspNetUser { get; set; }
-        public ApprovedUser approvedUser { get; set; }
+        public AspNetUser AspNetUser { get; set; }
+        public ApprovedUser ApprovedUser { get; set; }
     }
 }

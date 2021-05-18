@@ -10,6 +10,9 @@
         <EntityTypeShape EntityType="ListDataModel.UserList" Width="1.5" PointX="1.125" PointY="4.375" IsExpanded="true" />
         <AssociationConnector Association="ListDataModel.FK_ListInfo_UserLists" />
         <AssociationConnector Association="ListDataModel.FK_ApprovedUsers_UserLists" />
+        <EntityTypeShape EntityType="ListDataModel.AspNetUser" Width="1.5" PointX="5.5" PointY="2.625" />
+        <AssociationConnector Association="ListDataModel.FK_ApprovedUsers_AspNetUsers" />
+        <AssociationConnector Association="ListDataModel.FK_UserListsOwner_AspNetUsersId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

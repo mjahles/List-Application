@@ -13,7 +13,7 @@ namespace FinalProjectAutoImplementedAuthentication.Models
     using System.Collections.Generic;
     using System.Web.Mvc;
     using System.ComponentModel.DataAnnotations;
-    
+
     public partial class ListInfo
     {
         [Key]

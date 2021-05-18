@@ -13,7 +13,7 @@ namespace FinalProjectAutoImplementedAuthentication.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
-    
+
     public partial class UserList
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -43,5 +43,6 @@ namespace FinalProjectAutoImplementedAuthentication.Models
         public virtual ICollection<ListInfo> ListInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ApprovedUser> ApprovedUsers { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

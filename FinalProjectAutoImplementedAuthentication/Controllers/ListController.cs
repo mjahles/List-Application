@@ -157,13 +157,14 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditListInfo(int listId)
+        public ActionResult EditListInfo(int listId, string message)
         {
             UserList userList = DB.UserLists.Find(listId);
 
             ViewData["listId"] = listId;
             ViewData["rowCount"] = userList.RowCount;
             ViewData["columnCount"] = userList.ColumnCount;
+            ViewData["message"] = message;
             ViewBag.Heading = listId;
             List<ListInfo> listInfos = new List<ListInfo>();
 
@@ -198,6 +199,8 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditListInfo(List<ListInfo> modelData)
         {
+            string message;
+
             if (ModelState.IsValid)
             {
                 if (modelData != null)
@@ -225,9 +228,11 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
                     }
                     DB.SaveChanges();
                 }
-                return RedirectToAction("IndexList");
+                message = "Changes Saved Successfully";
+                return RedirectToAction("EditListInfo", new { modelData.FirstOrDefault().ListId, message });
             }
-            return View("IndexList");
+            message = "An error has occured. Please try again";
+            return RedirectToAction("EditListInfo", new { modelData.FirstOrDefault().ListId, message });
         }
 
         public ActionResult DeleteListInfo(int listId)
@@ -249,13 +254,55 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
         [HttpGet]
         public ActionResult ShareList(int listId)
         {
-            return PartialView(listId);
+            ViewData["listId"] = listId;
+            return PartialView("ShareList");
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ShareList(int listId, string searchedEmail)
         {
-            return RedirectToAction("EditListInfo", listId);
+            string message;
+
+            if (ModelState.IsValid)
+            {
+                string userId;
+                List<AspNetUser> userList = new List<AspNetUser>();
+
+                foreach (var userRecord in DB.AspNetUsers)
+                {
+                    if (userRecord.Email == searchedEmail)
+                    {
+                        userList.Add(userRecord);
+                    }
+                }
+
+                userId = userList.FirstOrDefault().Id;
+
+                if (userId != null)
+                {
+                    foreach (var appUser in DB.ApprovedUsers)
+                    {
+                        if (appUser.UserId == userId && appUser.ListId == listId)
+                        {
+                            message = "That user already has access to this list.";
+                            return RedirectToAction("EditListInfo", new { listId, message } );
+                        }
+                    }
+
+                    ApprovedUser userEntry = new ApprovedUser();
+                    userEntry.UserId = userId;
+                    userEntry.ListId = listId;
+
+                    DB.ApprovedUsers.Add(userEntry);
+                    DB.SaveChanges();
+
+                    message = "User successfully added.";
+                    return RedirectToAction("EditListInfo", new { listId, message });
+                }
+            }
+            message = "An error has occured. Please try again.";
+            return RedirectToAction("EditListInfo", new { listId, message });
         }
 
         public ActionResult DeleteAllSharedUsers(int listId)

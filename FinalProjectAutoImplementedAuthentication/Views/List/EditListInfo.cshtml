@@ -43,9 +43,16 @@
 
 @{ ListInfo lastRowEntry = listInfoData.Last(); }
 
+@if (ViewData["message"] != null)
+{
+    <script>
+        alert('@ViewData["message"]')
+    </script>
+}
+
 <h2>@ViewBag.Heading</h2>
 
-<button class="btn btn-primary" id="share_btn" onclick="share(@searchedEmail)">Share</button>
+<button class="btn btn-primary" id="share_btn" onclick="share(@listIdChecker)">Share</button>
 
 @using (Html.BeginForm("EditListInfo", "List", FormMethod.Post))
 {
@@ -113,18 +120,18 @@
                 <a href="#" class="close" data-dismiss="modal">&times;</a>
                 <h4 class="modal-title" id="modalTitle"></h4>
             </div>
-            <div class="modal-body" id="modalbody">@Html.TextBox("searchedEmailText")</div>
+            <div class="modal-body" id="modalbody"></div>
             <div class="modal-footer"></div>
         </div>
     </div>
 </div>
 
 <script>
-    var create = function (searchEmail) {
-        var createURL = "/List/Create";
-        $("#modalTitle").html("Add new list data");
-        $("#modalbody").load(createURL, function () {
-            $("#ActionModal").modal("show");
+    var share = function (listId) {
+        var shareURL = "/List/ShareList?ListId=" + listId;
+        $("#modalTitle").html("Share List");
+        $("#modalbody").load(shareURL, function () {
+            $("#ShareModal").modal("show");
         });
     }
 </script>

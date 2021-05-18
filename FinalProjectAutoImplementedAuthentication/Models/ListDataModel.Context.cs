@@ -28,5 +28,6 @@ namespace FinalProjectAutoImplementedAuthentication.Models
         public virtual DbSet<ApprovedUser> ApprovedUsers { get; set; }
         public virtual DbSet<ListInfo> ListInfoes { get; set; }
         public virtual DbSet<UserList> UserLists { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
     }
 }

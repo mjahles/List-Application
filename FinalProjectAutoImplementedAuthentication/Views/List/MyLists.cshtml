@@ -17,7 +17,8 @@
             </th>
     </tr>
 
-    @{ ListInfo selectedList = new ListInfo(); }
+    @{ ListInfo selectedList = new ListInfo();
+       string message = null; }
 
     @foreach (var item in Model.UserLists)
     {
@@ -37,7 +38,7 @@
                             selectedList.IsChecked = info.IsChecked;
                         }
                     }
-                    @Html.ActionLink(item.ListName, "EditListInfo", new { item.ListId })
+                    @Html.ActionLink(item.ListName, "EditListInfo", new { item.ListId, message })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RowCount)

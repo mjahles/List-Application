@@ -14,14 +14,14 @@ namespace FinalProjectAutoImplementedAuthentication.Models
     using System.Web.Mvc;
     using System.ComponentModel.DataAnnotations;
 
-
     public partial class ApprovedUser
     {
         [Key]
         public int AppUserId { get; set; }
         public string UserId { get; set; }
         public int ListId { get; set; }
-    
+
         public virtual UserList UserList { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

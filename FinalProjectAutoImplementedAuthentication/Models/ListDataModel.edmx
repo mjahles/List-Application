@@ -13,6 +13,23 @@
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ListId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
         <EntityType Name="ListInfo">
           <Key>
             <PropertyRef Name="InfoId" />
@@ -34,6 +51,18 @@
           <Property Name="ColumnCount" Type="int" Nullable="false" />
           <Property Name="OwnerId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
+        <Association Name="FK_ApprovedUsers_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="ApprovedUsers" Type="Self.ApprovedUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApprovedUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ApprovedUsers_UserLists">
           <End Role="UserLists" Type="Self.UserLists" Multiplicity="1" />
           <End Role="ApprovedUsers" Type="Self.ApprovedUsers" Multiplicity="*" />
@@ -58,10 +87,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserListsOwner_AspNetUsersId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="UserLists" Type="Self.UserLists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLists">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ListDataModelStoreContainer">
           <EntitySet Name="ApprovedUsers" EntityType="Self.ApprovedUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ListInfo" EntityType="Self.ListInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLists" EntityType="Self.UserLists" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ApprovedUsers_AspNetUsers" Association="Self.FK_ApprovedUsers_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="ApprovedUsers" EntitySet="ApprovedUsers" />
+          </AssociationSet>
           <AssociationSet Name="FK_ApprovedUsers_UserLists" Association="Self.FK_ApprovedUsers_UserLists">
             <End Role="UserLists" EntitySet="UserLists" />
             <End Role="ApprovedUsers" EntitySet="ApprovedUsers" />
@@ -69,6 +115,10 @@
           <AssociationSet Name="FK_ListInfo_UserLists" Association="Self.FK_ListInfo_UserLists">
             <End Role="UserLists" EntitySet="UserLists" />
             <End Role="ListInfo" EntitySet="ListInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserListsOwner_AspNetUsersId" Association="Self.FK_UserListsOwner_AspNetUsersId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserLists" EntitySet="UserLists" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -83,6 +133,7 @@
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ListId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="UserList" Relationship="ListDataModel.FK_ApprovedUsers_UserLists" FromRole="ApprovedUser" ToRole="UserList" />
+          <NavigationProperty Name="AspNetUser" Relationship="ListDataModel.FK_ApprovedUsers_AspNetUsers" FromRole="ApprovedUser" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="ListInfo">
           <Key>
@@ -107,6 +158,7 @@
           <Property Name="OwnerId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="ListInfoes" Relationship="ListDataModel.FK_ListInfo_UserLists" FromRole="UserList" ToRole="ListInfo" />
           <NavigationProperty Name="ApprovedUsers" Relationship="ListDataModel.FK_ApprovedUsers_UserLists" FromRole="UserList" ToRole="ApprovedUser" />
+          <NavigationProperty Name="AspNetUser" Relationship="ListDataModel.FK_UserListsOwner_AspNetUsersId" FromRole="UserList" ToRole="AspNetUser" />
         </EntityType>
         <EntityContainer Name="ListDataEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ApprovedUsers" EntityType="Self.ApprovedUser" />
@@ -119,6 +171,15 @@
           <AssociationSet Name="FK_ApprovedUsers_UserLists" Association="ListDataModel.FK_ApprovedUsers_UserLists">
             <End Role="UserList" EntitySet="UserLists" />
             <End Role="ApprovedUser" EntitySet="ApprovedUsers" />
+          </AssociationSet>
+          <EntitySet Name="AspNetUsers" EntityType="ListDataModel.AspNetUser" />
+          <AssociationSet Name="FK_ApprovedUsers_AspNetUsers" Association="ListDataModel.FK_ApprovedUsers_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="ApprovedUser" EntitySet="ApprovedUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserListsOwner_AspNetUsersId" Association="ListDataModel.FK_UserListsOwner_AspNetUsersId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="UserList" EntitySet="UserLists" />
           </AssociationSet>
         </EntityContainer>
         <Association Name="FK_ListInfo_UserLists">
@@ -142,6 +203,49 @@
             </Principal>
             <Dependent Role="ApprovedUser">
               <PropertyRef Name="ListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ApprovedUsers" Relationship="ListDataModel.FK_ApprovedUsers_AspNetUsers" FromRole="AspNetUser" ToRole="ApprovedUser" />
+          <NavigationProperty Name="UserLists" Relationship="ListDataModel.FK_UserListsOwner_AspNetUsersId" FromRole="AspNetUser" ToRole="UserList" />
+        </EntityType>
+        <Association Name="FK_ApprovedUsers_AspNetUsers">
+          <End Type="ListDataModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="ListDataModel.ApprovedUser" Role="ApprovedUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApprovedUser">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserListsOwner_AspNetUsersId">
+          <End Type="ListDataModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="ListDataModel.UserList" Role="UserList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserList">
+              <PropertyRef Name="OwnerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -180,6 +284,24 @@
                 <ScalarProperty Name="RowCount" ColumnName="RowCount" />
                 <ScalarProperty Name="ColumnCount" ColumnName="ColumnCount" />
                 <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="ListDataModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

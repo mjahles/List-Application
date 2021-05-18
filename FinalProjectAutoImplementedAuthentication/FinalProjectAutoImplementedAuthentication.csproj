@@ -187,7 +187,7 @@
       <DependentUpon>ListDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUser.cs">
-      <DependentUpon>UserModel.tt</DependentUpon>
+      <DependentUpon>ListDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EditListInfoViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -215,21 +215,6 @@
     <Compile Include="Models\UserList.cs">
       <DependentUpon>ListDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -252,16 +237,6 @@
       <DependentUpon>ListDataModel.edmx</DependentUpon>
       <LastGenOutput>ListDataModel.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\UserModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UserModel.edmx</DependentUpon>
-      <LastGenOutput>UserModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\UserModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UserModel.edmx</DependentUpon>
-      <LastGenOutput>UserModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\ListDataModel.edmx">
@@ -270,13 +245,6 @@
     </EntityDeploy>
     <Content Include="Models\ListDataModel.edmx.diagram">
       <DependentUpon>ListDataModel.edmx</DependentUpon>
-    </Content>
-    <EntityDeploy Include="Models\UserModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>UserModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\UserModel.edmx.diagram">
-      <DependentUpon>UserModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -330,6 +298,7 @@
     <Content Include="Views\List\_Create.cshtml" />
     <Content Include="Views\List\EditListInfo.cshtml" />
     <Content Include="Views\List\IndexList.cshtml" />
+    <Content Include="Views\List\ShareList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

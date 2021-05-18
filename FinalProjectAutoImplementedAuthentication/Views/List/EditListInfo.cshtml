@@ -18,7 +18,7 @@
     string searchedEmail = "";
     List<ListInfo> dataReceptacle = new List<ListInfo>();
     int rowSaver = 1;
-    int columnSaver = 1; }
+    int columnTracker = 0; }
 
 @ViewData["idChecker"] = @listIdChecker;
 
@@ -41,6 +41,8 @@
     }
 }
 
+@{ ListInfo lastRowEntry = listInfoData.Last(); }
+
 <h2>@ViewBag.Heading</h2>
 
 <button class="btn btn-primary" id="share_btn" onclick="share(@searchedEmail)">Share</button>
@@ -52,43 +54,41 @@
     <table class="table">
         @while (rowEnumerator <= rowCount)
         {
+            List<ListInfo> rowList = new List<ListInfo>();
+
             <tr id="row@(rowNumber) ">
                 @foreach (var info in listInfoData)
                 {
                     if (info.RowNum == rowNumber)
                     {
-                        if (info.ColumnNum == columnNumber)
+                        rowList.Add(info);
+                    }
+
+                    if (info == lastRowEntry)
+                    {
+                        while (columnTracker <= columnCount)
                         {
                             <td class="@(columnNumber)" style="width:auto;">
-                                @Html.Hidden($"modelData[{nameCounter}].InfoId", listInfoData[nameCounter].InfoId)
-                                @Html.TextBox($"modelData[{nameCounter}].ColumnData", listInfoData[nameCounter].ColumnData)
-                                @Html.Hidden($"modelData[{nameCounter}].RowNum", listInfoData[nameCounter].RowNum)
-                                @Html.Hidden($"modelData[{nameCounter}].ColumnNum", listInfoData[nameCounter].ColumnNum)
-                                @Html.Hidden($"modelData[{nameCounter}].ListId", listInfoData[nameCounter].ListId)
-                                @Html.Hidden($"modelData[{nameCounter}].IsChecked", listInfoData[nameCounter].IsChecked)
+                                @{ ListInfo infoEntry = rowList.Find(x => x.ColumnNum == columnTracker); }
+
+                                @Html.Hidden($"modelData[{nameCounter}].InfoId", infoEntry.InfoId)
+                                @Html.TextBox($"modelData[{nameCounter}].ColumnData", infoEntry.ColumnData)
+                                @Html.Hidden($"modelData[{nameCounter}].RowNum", infoEntry.RowNum)
+                                @Html.Hidden($"modelData[{nameCounter}].ColumnNum", infoEntry.ColumnNum)
+                                @Html.Hidden($"modelData[{nameCounter}].ListId", infoEntry.ListId)
+                                @Html.Hidden($"modelData[{nameCounter}].IsChecked", infoEntry.IsChecked)
                             </td>
-                            // The empty set of quotes is used to define the template name. Since I am not using a template I leave the quotes empty. The extra string at the end is used to set the name attribute for the input tag that is created through the EditorFor method. This name attribute is used to identify the data that will be transferred into the database.
-                            noRowData = false;
-                            columnNumber++;
+                            columnTracker++; 
                             nameCounter++;
+                            columnNumber++;
                         }
                         if (columnNumber >= columnCount)
                         {
                             columnNumber = 0;
+                            columnTracker = 0;
                         }
                     }
                 }
-                @*@if (noRowData == true)
-                    {
-                        while (textBoxCounter <= columnCount)
-                        {
-                            <td class="@columnNumber" style="width:auto">
-                                @Html.TextBox($"row{rowNumber}" + $" column{columnNumber}")
-                            </td>
-                            textBoxCounter++;
-                            columnNumber++;
-                        }
-                    }*@
             </tr>
             textBoxCounter = 1;
             columnNumber = 0;
@@ -97,19 +97,13 @@
             noRowData = true;
         }
 
-        @*@while (rowSaver <= rowCount)
-            {
-
-            }*@
-
     </table>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Save" class="btn btn-default" />
         </div>
     </div>
-    // Currently unable to send data back to the database from this page. I need to figure out a way to get all of the data from the various text-boxes editorfor methods back to the HttpPost version of the EditListInfo method.  Currently am trying to add all of the data to a list and pass the list back through.  Not sure of the formatting for doing that though.
-}
+} @* Closing of the Beginform method *@
 
 
 <div class="modal fade" id="ShareModal">

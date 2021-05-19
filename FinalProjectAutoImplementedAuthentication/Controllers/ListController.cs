@@ -445,8 +445,18 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
 
         public ActionResult CreateDefaultInfo(UserList userList)
         {
-            var rowNumber = 0;
-            var columnNumber = 0;
+            string message;
+            int rowNumber = 0;
+            int columnNumber = 0;
+
+            foreach (var info in DB.ListInfoes)
+            {
+                if (info.ListId == userList.ListId)
+                {
+                    message = null;
+                    return RedirectToAction("EditListInfo", new { userList.ListId, message });
+                }
+            }
 
             while (rowNumber <= userList.RowCount)
             {
@@ -464,10 +474,11 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
                     columnNumber++;
                 }
                 rowNumber++;
-                columnNumber = 1;
+                columnNumber = 0;
             }
             DB.SaveChanges();
-            return RedirectToAction("IndexList");
+            message = null;
+            return RedirectToAction("EditListInfo", new { userList.ListId, message });
         }
 
     }

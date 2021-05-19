@@ -42,7 +42,7 @@
                             selectedList.IsChecked = info.IsChecked;
                         }
                     }
-                    @Html.ActionLink(item.ListName, "EditListInfo", new { item.ListId, message })
+                    @Html.ActionLink(item.ListName, "CreateDefaultInfo", item)
                 </td>
                 <td>
                     @{ modifiedRowCount = item.RowCount + 1; }

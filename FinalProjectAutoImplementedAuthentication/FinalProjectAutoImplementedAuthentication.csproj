@@ -299,6 +299,7 @@
     <Content Include="Views\List\EditListInfo.cshtml" />
     <Content Include="Views\List\IndexList.cshtml" />
     <Content Include="Views\List\ShareList.cshtml" />
+    <Content Include="Views\List\ManageRowColumn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

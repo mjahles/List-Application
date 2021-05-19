@@ -52,6 +52,7 @@
 
 <h2>@ViewBag.Heading</h2>
 
+<button class="btn btn-default" id="manage_row_column_btn" onclick="manageRowColumn(@listIdChecker)">Manage Rows</button>
 <button class="btn btn-primary" id="share_btn" onclick="share(@listIdChecker)">Share</button>
 
 @using (Html.BeginForm("EditListInfo", "List", FormMethod.Post))
@@ -78,12 +79,16 @@
                             <td class="@(columnNumber)" style="width:auto;">
                                 @{ ListInfo infoEntry = rowList.Find(x => x.ColumnNum == columnTracker); }
 
-                                @Html.Hidden($"modelData[{nameCounter}].InfoId", infoEntry.InfoId)
-                                @Html.TextBox($"modelData[{nameCounter}].ColumnData", infoEntry.ColumnData)
-                                @Html.Hidden($"modelData[{nameCounter}].RowNum", infoEntry.RowNum)
-                                @Html.Hidden($"modelData[{nameCounter}].ColumnNum", infoEntry.ColumnNum)
-                                @Html.Hidden($"modelData[{nameCounter}].ListId", infoEntry.ListId)
-                                @Html.Hidden($"modelData[{nameCounter}].IsChecked", infoEntry.IsChecked)
+                                @if (infoEntry != null)
+                                {
+                                    @Html.Hidden($"modelData[{nameCounter}].InfoId", infoEntry.InfoId)
+                                    @Html.TextBox($"modelData[{nameCounter}].ColumnData", infoEntry.ColumnData)
+                                    @Html.Hidden($"modelData[{nameCounter}].RowNum", infoEntry.RowNum)
+                                    @Html.Hidden($"modelData[{nameCounter}].ColumnNum", infoEntry.ColumnNum)
+                                    @Html.Hidden($"modelData[{nameCounter}].ListId", infoEntry.ListId)
+                                    @Html.Hidden($"modelData[{nameCounter}].IsChecked", infoEntry.IsChecked)
+                                }
+
                             </td>
                             columnTracker++; 
                             nameCounter++;
@@ -126,12 +131,35 @@
     </div>
 </div>
 
+<div class="modal fade" id="ManageModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4 class="modal-title" id="manageTitle"></h4>
+            </div>
+            <div class="modal-body" id="managebody"></div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
 <script>
     var share = function (listId) {
         var shareURL = "/List/ShareList?ListId=" + listId;
         $("#modalTitle").html("Share List");
         $("#modalbody").load(shareURL, function () {
             $("#ShareModal").modal("show");
+        });
+    }
+</script>
+
+<script>
+    var manageRowColumn = function (listId) {
+        var manageRowColumnURL = "/List/ManageRowColumn?ListId=" + listId;
+        $("#manageTitle").html("Add/Delete Rows and Columns");
+        $("#managebody").load(manageRowColumnURL, function () {
+            $("#ManageModal").modal("show");
         });
     }
 </script>

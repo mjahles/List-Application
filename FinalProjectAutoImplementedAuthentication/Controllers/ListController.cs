@@ -321,6 +321,108 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             return RedirectToAction("IndexList");
         }
 
+        [HttpGet]
+        public ActionResult ManageRowColumn(int listId)
+        {
+            UserList model = DB.UserLists.Find(listId);
+
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageRowColumn(UserList userList)
+        {
+            string message;
+
+            if (ModelState.IsValid)
+            {
+                UserList listEntry = DB.UserLists.Find(userList.ListId);
+                UserList oldListValues = new UserList();
+
+                oldListValues.ListId = listEntry.ListId;
+                oldListValues.RowCount = listEntry.RowCount;
+                oldListValues.ColumnCount = listEntry.ColumnCount;
+
+                listEntry.ListId = userList.ListId;
+                listEntry.RowCount = userList.RowCount;
+                listEntry.ColumnCount = userList.ColumnCount;
+                
+                if (listEntry.RowCount < oldListValues.RowCount)
+                {
+                    List<ListInfo> listInfos = new List<ListInfo>();
+
+                    foreach (var info in DB.ListInfoes)
+                    {
+                        if (info.ListId == userList.ListId && info.RowNum == oldListValues.RowCount)
+                        {
+                            listInfos.Add(info);
+                        }
+                    }
+
+                    DB.ListInfoes.RemoveRange(listInfos);
+                }
+
+                if (listEntry.ColumnCount < oldListValues.ColumnCount)
+                {
+                    List<ListInfo> listInfos = new List<ListInfo>();
+
+                    foreach (var info in DB.ListInfoes)
+                    {
+                        if (info.ListId == userList.ListId && info.ColumnNum == oldListValues.ColumnCount)
+                        {
+                            listInfos.Add(info);
+                        }
+                    }
+
+                    DB.ListInfoes.RemoveRange(listInfos);
+                }
+
+                if (listEntry.RowCount > oldListValues.RowCount)
+                {
+                    List<ListInfo> infoEntries = new List<ListInfo>();
+                    int counter = 0;
+
+                    while (counter <= userList.ColumnCount)
+                    {
+                        ListInfo entry = new ListInfo();
+                        entry.ColumnData = "";
+                        entry.RowNum = listEntry.RowCount;
+                        entry.ColumnNum = counter;
+                        entry.ListId = userList.ListId;
+                        counter++;
+
+                        infoEntries.Add(entry);
+                    }
+                    DB.ListInfoes.AddRange(infoEntries);
+                }
+
+                if (listEntry.ColumnCount > oldListValues.ColumnCount)
+                {
+                    List<ListInfo> infoEntries = new List<ListInfo>();
+                    int counter = 0;
+
+                    while (counter <= userList.RowCount)
+                    {
+                        ListInfo entry = new ListInfo();
+                        entry.ColumnData = "";
+                        entry.RowNum = counter;
+                        entry.ColumnNum = listEntry.ColumnCount;
+                        entry.ListId = userList.ListId;
+                        counter++;
+
+                        infoEntries.Add(entry);
+                    }
+                    DB.ListInfoes.AddRange(infoEntries);
+                }
+                DB.SaveChanges();
+                message = "List Updated";
+                return RedirectToAction("EditListInfo", new { userList.ListId, message });
+            }
+            message = "An error has occurred. Please try again.";
+            return RedirectToAction("EditListInfo", new { userList.ListId, message });
+        }
+
         public ActionResult CreateRows(UserList userList)
         {
             var rowNumber = 1;

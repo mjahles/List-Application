@@ -413,11 +413,20 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
                 if (listEntry.ColumnCount > oldListValues.ColumnCount)
                 {
                     List<ListInfo> infoEntries = new List<ListInfo>();
+                    List<ListInfo> infoData = new List<ListInfo>();
                     int columnDifference = listEntry.ColumnCount - oldListValues.ColumnCount;
                     int rowCounter = 0;
                     int columnCounter = 0;
 
-                    while (columnCounter <= columnDifference)
+                    foreach (var info in DB.ListInfoes)
+                    {
+                        if (info.ListId == userList.ListId)
+                        {
+                            infoData.Add(info);
+                        }
+                    }
+
+                    while (columnCounter < columnDifference)
                     {
                         while (rowCounter <= userList.RowCount)
                         {
@@ -426,6 +435,18 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
                             entry.RowNum = rowCounter;
                             entry.ColumnNum = listEntry.ColumnCount - columnCounter;
                             entry.ListId = userList.ListId;
+
+                            foreach (var item in infoData)
+                            {
+                                if (item.RowNum == entry.RowNum)
+                                {
+                                    if (item.IsChecked == true)
+                                    {
+                                        entry.IsChecked = item.IsChecked;
+                                        break;
+                                    }
+                                }
+                            }
                             rowCounter++;
 
                             infoEntries.Add(entry);
@@ -520,6 +541,19 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
                         ListInfo dbRecord = DB.ListInfoes.Find(info.InfoId);
 
                         dbRecord.IsChecked = info.IsChecked;
+
+                        if (info.IsChecked == true)
+                        {
+                            foreach (var item in modelData)
+                            {
+                                if (item.RowNum == info.RowNum)
+                                {
+                                    ListInfo subRecord = DB.ListInfoes.Find(item.InfoId);
+
+                                    subRecord.IsChecked = info.IsChecked;
+                                }
+                            }
+                        }
                     }
                     DB.SaveChanges();
                 }

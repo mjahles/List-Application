@@ -281,6 +281,15 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
 
                 if (userId != null)
                 {
+                    foreach (var list in DB.UserLists)
+                    {
+                        if (list.ListId == listId && list.OwnerId == userId)
+                        {
+                            message = "Lists can not be shared with yourself!";
+                            return RedirectToAction("EditListInfo", new { listId, message });
+                        }
+                    }
+
                     foreach (var appUser in DB.ApprovedUsers)
                     {
                         if (appUser.UserId == userId && appUser.ListId == listId)

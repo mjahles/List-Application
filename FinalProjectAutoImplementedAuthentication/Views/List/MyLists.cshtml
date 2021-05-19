@@ -57,8 +57,7 @@
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
-                    @Html.ActionLink("Details", "Details", new { item.ListId }) |
-                    <button class="btn btn-primary" id="delete_btn" onclick="_delete(@item.ListId)">Delete</button>
+                    <button class="btn btn-danger" id="delete_btn" onclick="_delete(@item.ListId)">Delete</button>
                     @*@Html.ActionLink("Delete", "DeleteList", new { item.ListId })*@
                 </td>
             </tr>
@@ -78,7 +77,7 @@
                 //curListId.Add(item.ListId);
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ListName)
+                        @Html.ActionLink(item.ListName, "ViewSharedList", new { item.ListId })
                     </td>
                     <td>
                         @{ modifiedRowCount = item.RowCount + 1; }
@@ -93,7 +92,6 @@
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
-                        @Html.ActionLink("Details", "Details", new { item.ListId }) |
                         @*@Html.ActionLink("Delete", "DeleteList", new { item.ListId })*@
                     </td>
                 </tr>

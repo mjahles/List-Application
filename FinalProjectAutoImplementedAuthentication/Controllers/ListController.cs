@@ -165,7 +165,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             ViewData["rowCount"] = userList.RowCount;
             ViewData["columnCount"] = userList.ColumnCount;
             ViewData["message"] = message;
-            ViewBag.Heading = listId;
+            ViewBag.Heading = userList.ListName;
             List<ListInfo> listInfos = new List<ListInfo>();
 
             foreach (var info in DB.ListInfoes.ToList().Where(x => x.ListId == listId))
@@ -479,6 +479,55 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             DB.SaveChanges();
             message = null;
             return RedirectToAction("EditListInfo", new { userList.ListId, message });
+        }
+
+        [HttpGet]
+        public ActionResult ViewSharedList(int listId, string message)
+        {
+            UserList userList = DB.UserLists.Find(listId);
+            ViewData["listId"] = userList.ListId;
+            ViewData["rowCount"] = userList.RowCount;
+            ViewData["columnCount"] = userList.ColumnCount;
+            ViewData["message"] = message;
+            ViewBag.Heading = userList.ListName;
+
+            List<ListInfo> listInfos = new List<ListInfo>();
+
+            IEnumerable<ListInfo> listData = listInfos;
+
+            foreach (var info in DB.ListInfoes)
+            {
+                if (info.ListId == listId)
+                {
+                    listInfos.Add(info);
+                }
+            }
+            return View(listData);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ViewSharedList(List<ListInfo> modelData)
+        {
+            string message;
+
+            if (ModelState.IsValid)
+            {
+                if (modelData != null)
+                {
+                    foreach (var info in modelData)
+                    {
+                        ListInfo dbRecord = DB.ListInfoes.Find(info.InfoId);
+
+                        dbRecord.IsChecked = info.IsChecked;
+                    }
+                    DB.SaveChanges();
+                }
+                message = "Changes Saved Successfully";
+                return RedirectToAction("ViewSharedList", new { modelData.FirstOrDefault().ListId, message });
+            }
+            message = "An Error has occured. Please try again.";
+            return RedirectToAction("ViewSharedList", new { modelData.FirstOrDefault().ListId, message });
         }
 
     }

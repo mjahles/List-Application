@@ -1,0 +1,125 @@
+﻿@using FinalProjectAutoImplementedAuthentication.Models;
+@model List<FinalProjectAutoImplementedAuthentication.Models.ListInfo>
+
+@{
+    ViewBag.Title = "ViewSharedList";
+}
+
+@{ List<ListInfo> listInfoData = new List<ListInfo>();
+    int rowCount = (int)ViewData["rowCount"];
+    int columnCount = (int)ViewData["columnCount"];
+    int nameCounter = 0;
+    int rowEnumerator = 0;
+    int rowNumber = 0;
+    int columnNumber = 0;
+    int listIdChecker = (int)ViewData["listid"];
+    bool noRowData = true;
+    int textBoxCounter = 1;
+    string searchedEmail = "";
+    List<ListInfo> dataReceptacle = new List<ListInfo>();
+    int rowSaver = 1;
+    int columnTracker = 0; }
+
+@* Finding the number of rows and columns to display *@
+@*@foreach (var item in Model.UserLists)
+    {
+        if (item.ListId == (int)ViewData["listId"])
+        {
+            rowCount = item.RowCount;
+            columnCount = item.ColumnCount;
+        }
+    }*@
+
+@* Creating a list that contains ListInfo objects from our list only *@
+@foreach (var entry in Model)
+{
+    if (entry.ListId == listIdChecker)
+    {
+        listInfoData.Add(entry);
+    }
+}
+
+@{ ListInfo lastRowEntry = listInfoData.Last(); }
+
+@if (ViewData["message"] != null)
+{
+    <script>
+        alert('@ViewData["message"]')
+    </script>
+}
+
+<h2>@ViewBag.Heading</h2>
+
+@using (Html.BeginForm("ViewSharedList", "List", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <table class="table">
+        @while (rowEnumerator <= rowCount)
+        {
+            List<ListInfo> rowList = new List<ListInfo>();
+
+            <tr id="row@(rowNumber) ">
+                @foreach (var info in listInfoData)
+                {
+                    if (info.RowNum == rowNumber)
+                    {
+                        rowList.Add(info);
+                    }
+
+                    if (info == lastRowEntry)
+                    {
+                        while (columnTracker <= columnCount)
+                        {
+                            <td class="@(columnNumber)" style="width:auto;">
+                                @{ ListInfo infoEntry = rowList.Find(x => x.ColumnNum == columnTracker); }
+
+                                @if (infoEntry != null)
+                                {
+                                    if (infoEntry.ColumnNum == columnCount)
+                                    {
+                                        @Html.Hidden($"modelData[{nameCounter}].InfoId", infoEntry.InfoId)
+                                        @Html.TextBox($"modelData[{nameCounter}].ColumnData", infoEntry.ColumnData, new { @readonly = "readonly" })
+                                        @Html.Hidden($"modelData[{nameCounter}].RowNum", infoEntry.RowNum)
+                                        @Html.Hidden($"modelData[{nameCounter}].ColumnNum", infoEntry.ColumnNum)
+                                        @Html.Hidden($"modelData[{nameCounter}].ListId", infoEntry.ListId)
+                                        @Html.CheckBox($"modelData[{nameCounter}].IsChecked", infoEntry.IsChecked)
+                                    }
+                                    else
+                                    {
+                                        @Html.Hidden($"modelData[{nameCounter}].InfoId", infoEntry.InfoId)
+                                        @Html.TextBox($"modelData[{nameCounter}].ColumnData", infoEntry.ColumnData, new { @readonly = "readonly" })
+                                        @Html.Hidden($"modelData[{nameCounter}].RowNum", infoEntry.RowNum)
+                                        @Html.Hidden($"modelData[{nameCounter}].ColumnNum", infoEntry.ColumnNum)
+                                        @Html.Hidden($"modelData[{nameCounter}].ListId", infoEntry.ListId)
+                                        @Html.Hidden($"modelData[{nameCounter}].IsChecked", infoEntry.IsChecked)
+                                    }
+                                }
+
+                            </td>
+                            columnTracker++;
+                            nameCounter++;
+                            columnNumber++;
+                        }
+                        if (columnNumber >= columnCount)
+                        {
+                            columnNumber = 0;
+                            columnTracker = 0;
+                        }
+                    }
+                }
+            </tr>
+            textBoxCounter = 1;
+            columnNumber = 0;
+            rowNumber++;
+            rowEnumerator++;
+            noRowData = true;
+        }
+
+    </table>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+} @* Closing of the Beginform method *@

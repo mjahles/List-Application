@@ -3,22 +3,26 @@
 
 <table class="table">
     <tr>
-            <th>
-                @Html.DisplayNameFor(modelLabel => modelLabel.UserList.ListName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(modelLabel => modelLabel.UserList.RowCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(modelLabel => modelLabel.UserList.ColumnCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(modelLabel => modelLabel.UserList.OwnerId)
-            </th>
+        <th>
+            @Html.DisplayNameFor(modelLabel => modelLabel.UserList.ListName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(modelLabel => modelLabel.UserList.RowCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(modelLabel => modelLabel.UserList.ColumnCount)
+        </th>
+        <th>
+            <label>Owner</label>
+        </th>
     </tr>
 
+
+
     @{ ListInfo selectedList = new ListInfo();
-       string message = null; }
+        string message = null;
+        int modifiedRowCount;
+        int modifiedColumnCount; }
 
     @foreach (var item in Model.UserLists)
     {
@@ -41,18 +45,19 @@
                     @Html.ActionLink(item.ListName, "EditListInfo", new { item.ListId, message })
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RowCount)
+                    @{ modifiedRowCount = item.RowCount + 1; }
+                    @modifiedRowCount
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ColumnCount)
+                    @{ modifiedColumnCount = item.ColumnCount + 1; }
+                    @modifiedColumnCount
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.OwnerId)
+                    You
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "EditList", new { item.ListId }) |
                     @Html.ActionLink("Details", "Details", new { item.ListId }) |
-                    @Html.ActionLink("CreateRows", "CreateRows", item)
                     <button class="btn btn-primary" id="delete_btn" onclick="_delete(@item.ListId)">Delete</button>
                     @*@Html.ActionLink("Delete", "DeleteList", new { item.ListId })*@
                 </td>
@@ -76,10 +81,12 @@
                         @Html.DisplayFor(modelItem => item.ListName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RowCount)
+                        @{ modifiedRowCount = item.RowCount + 1; }
+                        @modifiedRowCount
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ColumnCount)
+                        @{ modifiedColumnCount = item.ColumnCount + 1; }
+                        @modifiedColumnCount
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.OwnerId)

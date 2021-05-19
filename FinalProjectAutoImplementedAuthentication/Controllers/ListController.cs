@@ -337,6 +337,10 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
 
             if (ModelState.IsValid)
             {
+                // Fixing the indexing with the below statements. I add 1 to the values so that the user can easily know how many rows and columns their table should have. Then I subtract 1 below to correct the value back to what it should be in the database.
+                userList.RowCount = userList.RowCount - 1;
+                userList.ColumnCount = userList.ColumnCount - 1;
+
                 UserList listEntry = DB.UserLists.Find(userList.ListId);
                 UserList oldListValues = new UserList();
 
@@ -347,6 +351,8 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
                 listEntry.ListId = userList.ListId;
                 listEntry.RowCount = userList.RowCount;
                 listEntry.ColumnCount = userList.ColumnCount;
+
+                DB.SaveChanges();
                 
                 if (listEntry.RowCount < oldListValues.RowCount)
                 {
@@ -354,7 +360,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
 
                     foreach (var info in DB.ListInfoes)
                     {
-                        if (info.ListId == userList.ListId && info.RowNum == oldListValues.RowCount)
+                        if (info.ListId == userList.ListId && info.RowNum >= oldListValues.RowCount)
                         {
                             listInfos.Add(info);
                         }
@@ -369,7 +375,7 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
 
                     foreach (var info in DB.ListInfoes)
                     {
-                        if (info.ListId == userList.ListId && info.ColumnNum == oldListValues.ColumnCount)
+                        if (info.ListId == userList.ListId && info.ColumnNum >= oldListValues.ColumnCount)
                         {
                             listInfos.Add(info);
                         }
@@ -381,18 +387,25 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
                 if (listEntry.RowCount > oldListValues.RowCount)
                 {
                     List<ListInfo> infoEntries = new List<ListInfo>();
-                    int counter = 0;
+                    int rowDifference = listEntry.RowCount - oldListValues.RowCount;
+                    int rowCounter = 0;
+                    int columnCounter = 0;
 
-                    while (counter <= userList.ColumnCount)
+                    while (rowCounter <= rowDifference)
                     {
-                        ListInfo entry = new ListInfo();
-                        entry.ColumnData = "";
-                        entry.RowNum = listEntry.RowCount;
-                        entry.ColumnNum = counter;
-                        entry.ListId = userList.ListId;
-                        counter++;
+                        while (columnCounter <= userList.ColumnCount)
+                        {
+                            ListInfo entry = new ListInfo();
+                            entry.ColumnData = "";
+                            entry.RowNum = listEntry.RowCount - rowCounter;
+                            entry.ColumnNum = columnCounter;
+                            entry.ListId = userList.ListId;
+                            columnCounter++;
 
-                        infoEntries.Add(entry);
+                            infoEntries.Add(entry);
+                        }
+                        rowCounter++;
+                        columnCounter = 0;
                     }
                     DB.ListInfoes.AddRange(infoEntries);
                 }
@@ -400,18 +413,25 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
                 if (listEntry.ColumnCount > oldListValues.ColumnCount)
                 {
                     List<ListInfo> infoEntries = new List<ListInfo>();
-                    int counter = 0;
+                    int columnDifference = listEntry.ColumnCount - oldListValues.ColumnCount;
+                    int rowCounter = 0;
+                    int columnCounter = 0;
 
-                    while (counter <= userList.RowCount)
+                    while (columnCounter <= columnDifference)
                     {
-                        ListInfo entry = new ListInfo();
-                        entry.ColumnData = "";
-                        entry.RowNum = counter;
-                        entry.ColumnNum = listEntry.ColumnCount;
-                        entry.ListId = userList.ListId;
-                        counter++;
+                        while (rowCounter <= userList.RowCount)
+                        {
+                            ListInfo entry = new ListInfo();
+                            entry.ColumnData = "";
+                            entry.RowNum = rowCounter;
+                            entry.ColumnNum = listEntry.ColumnCount - columnCounter;
+                            entry.ListId = userList.ListId;
+                            rowCounter++;
 
-                        infoEntries.Add(entry);
+                            infoEntries.Add(entry);
+                        }
+                        columnCounter++;
+                        rowCounter = 0;
                     }
                     DB.ListInfoes.AddRange(infoEntries);
                 }
@@ -423,10 +443,10 @@ namespace FinalProjectAutoImplementedAuthentication.Controllers
             return RedirectToAction("EditListInfo", new { userList.ListId, message });
         }
 
-        public ActionResult CreateRows(UserList userList)
+        public ActionResult CreateDefaultInfo(UserList userList)
         {
-            var rowNumber = 1;
-            var columnNumber = 1;
+            var rowNumber = 0;
+            var columnNumber = 0;
 
             while (rowNumber <= userList.RowCount)
             {
